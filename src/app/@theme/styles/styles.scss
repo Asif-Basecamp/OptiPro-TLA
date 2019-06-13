@@ -1,0 +1,37 @@
+// themes - our custom or/and out of the box themes
+@import 'themes';
+
+// framework component themes (styles tied to theme variables)
+@import './nebular-theme/globals';
+@import './nebular-bootstrap/styles/globals';
+// ...
+
+// global app icon
+@import './icons';
+
+// global app font size
+@import './font-size';
+
+// loading progress bar theme
+// @import './pace.theme';
+
+// common css 
+@import './common';
+
+// custom css 
+@import './custom';
+
+// install the framework and custom global styles
+@include nb-install() {
+
+  // framework global styles
+  @include nb-theme-global();
+  // @include nb-auth-global();
+  @include nb-bootstrap-global();
+
+  // loading progress bar
+  //@include ngx-pace-theme();
+};
+
+
+

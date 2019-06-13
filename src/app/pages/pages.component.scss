@@ -1,0 +1,22 @@
+
+@import '../@theme/styles/themes.scss';
+
+@include nb-install-component() {
+  /deep/ router-outlet + * {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    animation: fade 1s;
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}

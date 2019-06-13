@@ -1,0 +1,264 @@
+
+body.opti_account-module {
+    position: relative;
+    float: left;
+    padding: 50px;
+    width: 100%;
+    min-height: 100vh;
+    &:before {
+        background-image: url('/assets/images/background2.jpg');
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        content: "";
+        left: 0;
+        z-index: -1;
+        -webkit-filter: blur(3px);
+        filter: blur(3px);
+        height: 100%;
+    }
+    // &:after {
+    //     content: '';
+    //     position: absolute;
+    //     width: 100%;
+    //     height: 100%;
+    //     top: 0;
+    //     left: 0;
+    //     z-index: -1;
+    //     background: #1e9af1;
+    //     opacity: 0.3;
+    // }
+}
+.nb-theme-default.opti_body-login nb-layout .layout{
+    background: transparent !important;
+    min-height: initial !important;
+}
+.plan-layout{  
+    & .layout{
+        background: transparent !important;
+        min-height: initial !important;
+    }
+}
+
+.default-page-bg{
+    width: 100%;
+    display:flex;
+    flex:1;
+    align-items: center;
+    justify-items: center;    
+    position: relative;  
+    overflow: hidden;
+    border-radius: nb-theme(card-border-radius);  
+    &:before {
+        background: url('../../../assets/images/background2.jpg');
+        background-size: cover;
+        background-position: left center;
+        content: '';
+        position: absolute;
+        top:50%;
+        left: 50%;
+        z-index: 1;
+        -webkit-filter: blur(3px);
+        filter: blur(3px);
+        width: calc(100% + 10px);
+        height: calc(100% + 10px);
+        transform: translateX(-50%)translateY(-50%);
+    }
+    // &:after {
+    //     content: '';
+    //     position: absolute;
+    //     width: 100%;
+    //     height: 100%;
+    //     top: 0;
+    //     left: 0;
+    //     z-index: 2;
+    //     background: nb-theme(color-primary);
+    //     opacity: 0.3;
+    // }
+}
+
+.opti-logo{
+    color:#fff;
+    font-family: Exo;
+    font-size: 3rem;
+    position: relative;
+    z-index: 100;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.3);
+    padding: 50px 40px 40px 40px;
+    border-radius: 0.375rem;
+    svg{
+        margin-right: 10px;
+        width:70px;
+        path{
+            fill:#fff;
+        }
+    }
+}
+
+.opti_version-info{
+    font-size: 1rem;
+    line-height: 2;
+    margin-top: 1rem;
+}
+
+//css for button
+.btn-disabled{
+    cursor: not-allowed !important;
+}
+.btn-icon-with-input{
+    width:26px;
+    font-size: 14px !important;
+    padding: 0 !important;
+    line-height: 1px !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height:nb-theme(form-control-height);
+}
+.btn.btn-with-icon-right{
+    padding: nb-theme(btn-padding-y-sm) - .215 nb-theme(btn-padding-x-sm) - 1.2 nb-theme(btn-padding-y-sm) - .215 nb-theme(btn-padding-x-sm) - 0.85 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn.btn-icon-only{
+    &.btn-default{
+        &:hover{
+            svg{
+                fill: nb-theme(color-primary);
+            }
+        }
+    }
+}
+nb-select{
+    button {
+        padding: nb-theme(btn-padding-y-sm) 25px nb-theme(btn-padding-y-sm) 0.5rem !important;
+        &:after{
+            transform: translateY(-50%);
+        }
+    }
+}
+.no-shadow{
+    box-shadow: none !important;
+}
+.border-light-gray{
+    border-color:nb-theme(tabs-separator);
+}
+label{
+    margin-bottom: 1px;
+    font-size: 12px;
+    line-height: 15px;
+}
+.no-shadow-card{
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+    & nb-card-header{
+        border-color: #dee2e6 !important;
+    }
+}
+.d-flex.flex-wrap {
+    & > label {
+        padding: 0.375rem 1.4rem 0.375rem 0 !important;
+    }
+}
+.form-group {
+    margin-bottom: 4px;
+}
+.flex-box{
+    display: flex;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.overflow-auto{
+    overflow: auto;
+}
+.overflow-hidden{
+    overflow: hidden;
+}
+.k-dropdown-operator .k-input {
+    display: none;
+}
+.card-min-85{
+    min-height: 85px;
+}
+.flex-direction-column{
+    flex-direction: column;
+}
+.flex-direction-row{
+    flex-direction: row;
+}
+.form-control.datepicker{
+    cursor: pointer;
+}  
+.with-control-bar{
+    padding-bottom: 47px;
+    position: relative;
+    height:100%;
+    & > .control-bar{
+        padding-top: 10px;
+        margin-top: 10px;
+        position: absolute;
+        bottom:0;
+        left:0;
+        width: 100%;        
+    }
+} 
+.form-control.datepicker + nb-datepicker{
+    display: flex;
+    width: 26px;
+    height:26px;
+    background-color: nb-theme(color-primary);
+    padding: 0px;
+    margin-top: -26px;
+    float: right;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: all 300ms ease-in-out;
+    border-top-right-radius: nb-theme(radius);
+    border-bottom-right-radius: nb-theme(radius);
+    &:before{
+        font-family: nb-theme(font-icon);
+        color: nb-theme(color-white);
+        content: "\e93d";
+        font-size: 14px;
+    }
+}
+.form-control.daepicker + nb-datepicker:hover{
+    opacity: 0.8;
+}
+
+.form-control.input-sm::-webkit-input-placeholder {
+    font-size: nb-theme(form-control-font-size-sm)  !important;
+}
+.form-control.input-sm::-moz-placeholder {
+    font-size: nb-theme(form-control-font-size-sm)  !important;
+}
+.form-control.input-sm:-ms-input-placeholder {
+    font-size: nb-theme(form-control-font-size-sm)  !important;
+}
+.form-control.input-sm::placeholder {
+    font-size: nb-theme(form-control-font-size-sm) !important;
+}
+.opti_error-msg {
+    color: nb-theme(color-danger) !important;
+    font-size: 12px !important;
+}
+// html body nb-select{
+//     & > [nbButton].btn-outline.btn-primary{
+//         &:hover{
+//             background-color: transparent !important;
+//             background-color: nb-theme(color-primary) !important;
+//         }
+//     }
+// }
+
+.grid-column{
+    background-color: red;
+}

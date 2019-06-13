@@ -1,0 +1,20 @@
+.dialog-container-backdrop{
+    z-index: 9998;
+}
+.dialog-container{
+    position: fixed;
+    top: 0;
+    left: 0px;
+    z-index: 9999;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    padding: 15px;
+    nb-card{
+        max-width: 600px;
+        max-height: calc(100vh - 90px);
+    }
+}

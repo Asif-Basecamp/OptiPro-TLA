@@ -1,0 +1,520 @@
+//Custom icon veriable
+
+$icomoon-font-family: "optipro-icon" !default;
+$icomoon-font-path: "../../../assets/fonts" !default;
+
+$optipro-icon-pdf-file: "\e94f";
+$optipro-icon-xls-file: "\e950";
+$optipro-icon-clock: "\e94e";
+$optipro-icon-APCreditMemo: "\e900";
+$optipro-icon-APDownPaymentInvoice: "\e901";
+$optipro-icon-APInvoice: "\e902";
+$optipro-icon-ARCreditMemo: "\e903";
+$optipro-icon-ARDownPayment: "\e904";
+$optipro-icon-ARInvoice: "\e905";
+$optipro-icon-Delivery: "\e906";
+$optipro-icon-Deposit: "\e907";
+$optipro-icon-GoodsIssue: "\e908";
+$optipro-icon-GoodsReceipt: "\e909";
+$optipro-icon-GoodsReceiptPO: "\e90a";
+$optipro-icon-GoodsReturn: "\e90b";
+$optipro-icon-GoodsReturnRequest: "\e90c";
+$optipro-icon-InventoryRevaluation: "\e93f";
+$optipro-icon-InventoryTransfer: "\e940";
+$optipro-icon-InventoryTransferRequest: "\e941";
+$optipro-icon-IssueForProduction: "\e942";
+$optipro-icon-JournalEntry: "\e943";
+$optipro-icon-OutgoingPayment: "\e944";
+$optipro-icon-ProductionOrder: "\e945";
+$optipro-icon-PurchaseOrder: "\e946";
+$optipro-icon-PurchaseQuotation: "\e947";
+$optipro-icon-PurchaseRequest: "\e948";
+$optipro-icon-ReceiptFromProduction: "\e949";
+$optipro-icon-Return: "\e94a";
+$optipro-icon-ReturnRequest: "\e94b";
+$optipro-icon-SalesOrder: "\e94c";
+$optipro-icon-SalesQuotation: "\e94d";
+$optipro-icon-sub-menu-alt: "\e90d";
+$optipro-icon-sub-menu: "\e90e";
+$optipro-icon-flow-chart-alt: "\e90f";
+$optipro-icon-next: "\e910";
+$optipro-icon-previous: "\e911";
+$optipro-icon-control-up: "\e912";
+$optipro-icon-control-down: "\e913";
+$optipro-icon-control-left: "\e914";
+$optipro-icon-control-right: "\e915";
+$optipro-icon-delete: "\e916";
+$optipro-icon-filter-remove: "\e917";
+$optipro-icon-filter: "\e918";
+$optipro-icon-log-off: "\e919";
+$optipro-icon-tree-structure: "\e91a";
+$optipro-icon-factory: "\e91b";
+$optipro-icon-checkbox: "\e91c";
+$optipro-icon-edit: "\e91d";
+$optipro-icon-check-circular: "\e91e";
+$optipro-icon-check-square: "\e91f";
+$optipro-icon-cross-square: "\e920";
+$optipro-icon-cross-circular: "\e921";
+$optipro-icon-minus-circle: "\e922";
+$optipro-icon-add-circle: "\e923";
+$optipro-icon-add-square: "\e924";
+$optipro-icon-minus-square: "\e925";
+$optipro-icon-minus: "\e926";
+$optipro-icon-add: "\e927";
+$optipro-icon-radio-checked: "\e928";
+$optipro-icon-radio: "\e929";
+$optipro-icon-collapse: "\e92a";
+$optipro-icon-expand: "\e92b";
+$optipro-icon-chevron-up: "\e92c";
+$optipro-icon-chevron-down: "\e92d";
+$optipro-icon-chevron-left: "\e92e";
+$optipro-icon-chevron-right: "\e92f";
+$optipro-icon-arrow-right: "\e930";
+$optipro-icon-arrow-left: "\e931";
+$optipro-icon-arrow-up: "\e932";
+$optipro-icon-arrow-down: "\e933";
+$optipro-icon-link: "\e934";
+$optipro-icon-list: "\e935";
+$optipro-icon-setting: "\e936";
+$optipro-icon-hamburger: "\e937";
+$optipro-icon-close: "\e938";
+$optipro-icon-check: "\e939";
+$optipro-icon-layer: "\e93a";
+$optipro-icon-grid: "\e93b";
+$optipro-icon-search: "\e93c";
+$optipro-icon-calendar: "\e93d";
+$optipro-icon-reload: "\e93e";
+
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?d3zopi');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?d3zopi#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?d3zopi') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?d3zopi') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?d3zopi##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="optipro-icon-"], [class*=" optipro-icon-"],
+.k-icon,.nb-arrow-left, .nb-arrow-right{
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.optipro-icon-pdf-file {
+  &:before {
+    content: $optipro-icon-pdf-file; 
+  }
+}
+.optipro-icon-xls-file {
+  &:before {
+    content: $optipro-icon-xls-file; 
+  }
+}
+.optipro-icon-clock, .k-i-clock {
+  &:before {
+    content: $optipro-icon-clock; 
+  }
+}
+.optipro-icon-APCreditMemo {
+  &:before {
+    content: $optipro-icon-APCreditMemo; 
+  }
+}
+.optipro-icon-APDownPaymentInvoice {
+  &:before {
+    content: $optipro-icon-APDownPaymentInvoice; 
+  }
+}
+.optipro-icon-APInvoice {
+  &:before {
+    content: $optipro-icon-APInvoice; 
+  }
+}
+.optipro-icon-ARCreditMemo {
+  &:before {
+    content: $optipro-icon-ARCreditMemo; 
+  }
+}
+.optipro-icon-ARDownPayment {
+  &:before {
+    content: $optipro-icon-ARDownPayment; 
+  }
+}
+.optipro-icon-ARInvoice {
+  &:before {
+    content: $optipro-icon-ARInvoice; 
+  }
+}
+.optipro-icon-Delivery {
+  &:before {
+    content: $optipro-icon-Delivery; 
+  }
+}
+.optipro-icon-Deposit {
+  &:before {
+    content: $optipro-icon-Deposit; 
+  }
+}
+.optipro-icon-GoodsIssue {
+  &:before {
+    content: $optipro-icon-GoodsIssue; 
+  }
+}
+.optipro-icon-GoodsReceipt {
+  &:before {
+    content: $optipro-icon-GoodsReceipt; 
+  }
+}
+.optipro-icon-GoodsReceiptPO {
+  &:before {
+    content: $optipro-icon-GoodsReceiptPO; 
+  }
+}
+.optipro-icon-GoodsReturn {
+  &:before {
+    content: $optipro-icon-GoodsReturn; 
+  }
+}
+.optipro-icon-GoodsReturnRequest {
+  &:before {
+    content: $optipro-icon-GoodsReturnRequest; 
+  }
+}
+.optipro-icon-InventoryRevaluation {
+  &:before {
+    content: $optipro-icon-InventoryRevaluation; 
+  }
+}
+.optipro-icon-InventoryTransfer {
+  &:before {
+    content: $optipro-icon-InventoryTransfer; 
+  }
+}
+.optipro-icon-InventoryTransferRequest {
+  &:before {
+    content: $optipro-icon-InventoryTransferRequest; 
+  }
+}
+.optipro-icon-IssueForProduction {
+  &:before {
+    content: $optipro-icon-IssueForProduction; 
+  }
+}
+.optipro-icon-JournalEntry {
+  &:before {
+    content: $optipro-icon-JournalEntry; 
+  }
+}
+.optipro-icon-OutgoingPayment {
+  &:before {
+    content: $optipro-icon-OutgoingPayment; 
+  }
+}
+.optipro-icon-ProductionOrder {
+  &:before {
+    content: $optipro-icon-ProductionOrder; 
+  }
+}
+.optipro-icon-PurchaseOrder {
+  &:before {
+    content: $optipro-icon-PurchaseOrder; 
+  }
+}
+.optipro-icon-PurchaseQuotation {
+  &:before {
+    content: $optipro-icon-PurchaseQuotation; 
+  }
+}
+.optipro-icon-PurchaseRequest {
+  &:before {
+    content: $optipro-icon-PurchaseRequest; 
+  }
+}
+.optipro-icon-ReceiptFromProduction {
+  &:before {
+    content: $optipro-icon-ReceiptFromProduction; 
+  }
+}
+.optipro-icon-Return {
+  &:before {
+    content: $optipro-icon-Return; 
+  }
+}
+.optipro-icon-ReturnRequest {
+  &:before {
+    content: $optipro-icon-ReturnRequest; 
+  }
+}
+.optipro-icon-SalesOrder {
+  &:before {
+    content: $optipro-icon-SalesOrder; 
+  }
+}
+.optipro-icon-SalesQuotation {
+  &:before {
+    content: $optipro-icon-SalesQuotation; 
+  }
+}
+.optipro-icon-sub-menu-alt {
+  &:before {
+    content: $optipro-icon-sub-menu-alt; 
+  }
+}
+.optipro-icon-sub-menu {
+  &:before {
+    content: $optipro-icon-sub-menu; 
+  }
+}
+.optipro-icon-flow-chart-alt {
+  &:before {
+    content: $optipro-icon-flow-chart-alt; 
+  }
+}
+.optipro-icon-next, .k-i-seek-e {
+  &:before {
+    content: $optipro-icon-next; 
+  }
+}
+.optipro-icon-previous, .k-i-seek-w {
+  &:before {
+    content: $optipro-icon-previous; 
+  }
+}
+.optipro-icon-control-up {
+  &:before {
+    content: $optipro-icon-control-up; 
+  }
+}
+.optipro-icon-control-down {
+  &:before {
+    content: $optipro-icon-control-down; 
+  }
+}
+.optipro-icon-control-left, .k-i-arrow-w {
+  &:before {
+    content: $optipro-icon-control-left; 
+  }
+}
+.optipro-icon-control-right, .k-i-arrow-e {
+  &:before {
+    content: $optipro-icon-control-right; 
+  }
+}
+.optipro-icon-delete {
+  &:before {
+    content: $optipro-icon-delete; 
+  }
+}
+.optipro-icon-filter-remove, .k-i-filter-clear {
+  &:before {
+    content: $optipro-icon-filter-remove; 
+  }
+}
+.optipro-icon-filter, .k-i-filter {
+  &:before {
+    content: $optipro-icon-filter; 
+  }
+}
+.optipro-icon-log-off {
+  &:before {
+    content: $optipro-icon-log-off; 
+  }
+}
+.optipro-icon-tree-structure {
+  &:before {
+    content: $optipro-icon-tree-structure; 
+  }
+}
+.optipro-icon-factory {
+  &:before {
+    content: $optipro-icon-factory; 
+  }
+}
+.optipro-icon-checkbox {
+  &:before {
+    content: $optipro-icon-checkbox; 
+  }
+}
+.optipro-icon-edit {
+  &:before {
+    content: $optipro-icon-edit; 
+  }
+}
+.optipro-icon-check-circular {
+  &:before {
+    content: $optipro-icon-check-circular; 
+  }
+}
+.optipro-icon-check-square {
+  &:before {
+    content: $optipro-icon-check-square; 
+  }
+}
+.optipro-icon-cross-square {
+  &:before {
+    content: $optipro-icon-cross-square; 
+  }
+}
+.optipro-icon-cross-circular {
+  &:before {
+    content: $optipro-icon-cross-circular; 
+  }
+}
+.optipro-icon-minus-circle {
+  &:before {
+    content: $optipro-icon-minus-circle; 
+  }
+}
+.optipro-icon-add-circle {
+  &:before {
+    content: $optipro-icon-add-circle; 
+  }
+}
+.optipro-icon-add-square {
+  &:before {
+    content: $optipro-icon-add-square; 
+  }
+}
+.optipro-icon-minus-square {
+  &:before {
+    content: $optipro-icon-minus-square; 
+  }
+}
+.optipro-icon-minus {
+  &:before {
+    content: $optipro-icon-minus; 
+  }
+}
+.optipro-icon-add {
+  &:before {
+    content: $optipro-icon-add; 
+  }
+}
+.optipro-icon-radio-checked {
+  &:before {
+    content: $optipro-icon-radio-checked; 
+  }
+}
+.optipro-icon-radio {
+  &:before {
+    content: $optipro-icon-radio; 
+  }
+}
+.optipro-icon-collapse {
+  &:before {
+    content: $optipro-icon-collapse; 
+  }
+}
+.optipro-icon-expand {
+  &:before {
+    content: $optipro-icon-expand; 
+  }
+}
+.optipro-icon-chevron-up {
+  &:before {
+    content: $optipro-icon-chevron-up; 
+  }
+}
+.optipro-icon-chevron-down {
+  &:before {
+    content: $optipro-icon-chevron-down; 
+  }
+}
+.optipro-icon-chevron-left, .nb-arrow-left {
+  &:before {
+    content: $optipro-icon-chevron-left; 
+  }
+}
+.optipro-icon-chevron-right, .nb-arrow-right {
+  &:before {
+    content: $optipro-icon-chevron-right; 
+  }
+}
+.optipro-icon-arrow-right {
+  &:before {
+    content: $optipro-icon-arrow-right; 
+  }
+}
+.optipro-icon-arrow-left {
+  &:before {
+    content: $optipro-icon-arrow-left; 
+  }
+}
+.optipro-icon-arrow-up {
+  &:before {
+    content: $optipro-icon-arrow-up; 
+  }
+}
+.optipro-icon-arrow-down {
+  &:before {
+    content: $optipro-icon-arrow-down; 
+  }
+}
+.optipro-icon-link {
+  &:before {
+    content: $optipro-icon-link; 
+  }
+}
+.optipro-icon-list {
+  &:before {
+    content: $optipro-icon-list; 
+  }
+}
+.optipro-icon-setting {
+  &:before {
+    content: $optipro-icon-setting; 
+  }
+}
+.optipro-icon-hamburger {
+  &:before {
+    content: $optipro-icon-hamburger; 
+  }
+}
+.optipro-icon-close {
+  &:before {
+    content: $optipro-icon-close; 
+  }
+}
+.optipro-icon-check {
+  &:before {
+    content: $optipro-icon-check; 
+  }
+}
+.optipro-icon-layer {
+  &:before {
+    content: $optipro-icon-layer; 
+  }
+}
+.optipro-icon-grid {
+  &:before {
+    content: $optipro-icon-grid; 
+  }
+}
+.optipro-icon-search {
+  &:before {
+    content: $optipro-icon-search; 
+  }
+}
+.optipro-icon-calendar {
+  &:before {
+    content: $optipro-icon-calendar; 
+  }
+}
+.optipro-icon-reload {
+  &:before {
+    content: $optipro-icon-reload; 
+  }
+}
+

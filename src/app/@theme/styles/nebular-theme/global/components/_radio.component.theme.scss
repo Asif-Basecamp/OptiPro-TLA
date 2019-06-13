@@ -1,0 +1,84 @@
+/*
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+@mixin input-border-color($color) {
+  input:checked + .radio-indicator,
+  input:hover:not(:disabled) + .radio-indicator {
+    color: $color;
+    &::before {
+      color: $color;
+    }
+  }
+}
+
+@mixin nb-input-status-color($origin-border-color) {
+  @include input-border-color($origin-border-color);
+  &.success {
+    @include input-border-color(nb-theme(color-success));
+  }
+  &.warning {
+    @include input-border-color(nb-theme(color-warning));
+  }
+  &.danger {
+    @include input-border-color(nb-theme(color-danger));
+  }
+}
+
+@mixin nb-radio-check-mark($size, $color) {
+  &::before {
+    font-family: nb-theme(font-icon);
+    content: "\e929" !important;
+    font-size: 15px;
+    color: nb-theme(form-control-border-color);
+  }
+}
+
+@mixin set-box-style($bg, $size, $border-size, $border-color) {
+  background-color: $bg;
+  width: $size;
+  height: $size;
+  border: $border-size solid $border-color;
+}
+
+@mixin nb-radio-theme() {
+  nb-radio {
+    .radio-indicator {
+      cursor: pointer;
+      &::before {
+        font-family: nb-theme(font-icon);
+        content: "\e929" !important;
+        font-size: 15px;
+        color: nb-theme(form-control-border-color);
+      }
+
+      @include nb-radio-check-mark(nb-theme(radio-size), nb-theme(radio-checkmark));
+    }
+
+    input:checked + .radio-indicator,
+    input:disabled:checked + .radio-indicator {
+      &::before {
+        content: "\e928" !important;
+        color:inherit;
+      }
+    }
+
+    input:disabled + .radio-indicator {
+      color: #d4d4d4;
+      @include nb-radio-check-mark(nb-theme(radio-disabled-size), nb-theme(radio-disabled-checkmark));
+    }
+
+    @include nb-input-status-color(nb-theme(radio-checked-border-color));
+
+    .radio-description {
+      color: nb-theme(radio-fg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      line-height: 17px;
+    }
+  }
+}
