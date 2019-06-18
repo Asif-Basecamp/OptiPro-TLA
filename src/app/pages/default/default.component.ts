@@ -118,7 +118,7 @@ export class DefaultComponent implements OnInit {
           for(let i=0; i<this.TenantList.length;i++){
             let map ={};
             map['title'] = this.TenantList[i].TENANTKEY;
-            map['icon'] = 'optipro-icon-list';
+            map['icon'] = 'optipro-icon-tenant';
             this.TenantItems.push(map);
           }
         }
