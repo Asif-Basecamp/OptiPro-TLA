@@ -34,5 +34,4 @@ export class CommonData {
         return temp;
     }
 
-
 }

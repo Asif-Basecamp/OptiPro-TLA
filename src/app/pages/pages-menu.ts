@@ -1,18 +1,16 @@
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
-  {
-    title: 'Tenant 1',
-    icon: 'optipro-icon-list',
-    link: '/pages/home',
-    // home: true,
-  },
-  {
-    title: 'Tenant 2',
-    icon: 'optipro-icon-list',
-    link: '/pages/production',
-    // home: true,
-  }
+  // {
+  //   title: 'Tenant 1',
+  //   icon: 'optipro-icon-list',
+  //   link: '/pages/home',
+  // },
+  // {
+  //   title: 'Tenant 2',
+  //   icon: 'optipro-icon-list',
+  //   link: '/pages/production',
+  // }
   // {
   //   title: 'FEATURES',
   //   group: true,
