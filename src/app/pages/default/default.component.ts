@@ -36,6 +36,7 @@ export class DefaultComponent implements OnInit {
   public ProductRowSelected: any;
   loading = false;
   public showNewBtn:boolean = false;
+  public showForm: boolean = false;
   loadingGrid = false;
 
   constructor(private httpClientSer: HttpClient,private licAsgnmt: LicenseService, private toastrService: NbToastrService) { }
@@ -81,13 +82,16 @@ export class DefaultComponent implements OnInit {
   }
 
   getProductsList(){
-    //this.loading = true;
+    this.loading = true;
     this.licAsgnmt.GetProductsList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.gridViewData = data;
         this.gridProductsData = data;
+        for(var i=0; i<this.gridViewData.length; i++){
+          this.gridViewData[i].rowcheck = false;
+         }        
         //this.setProductUncheckCheckbox();
-       // this.loading = false;
+        this.loading = false;
       });
   }
 
@@ -96,12 +100,18 @@ export class DefaultComponent implements OnInit {
     this.licAsgnmt.GetUserList(this.arrConfigData[0].optiProTLAURL,paramTenant).subscribe(
       data => {
         this.gridUsersData = data;
+
+        for(var i=0; i<this.gridUsersData.length; i++){
+          this.gridUsersData[i].rowcheck = false;
+        }
+
         if(paramTenant != ''){
           for(let i=0; i<this.gridUsersData.length; i++){
             if(this.gridUsersData[i].TENANTKEY == paramTenant){
-              let checkId = document.getElementsByClassName('checkboxUN')[i] as HTMLInputElement;
-              if(checkId !=undefined)
-              checkId.checked = true;
+              this.gridUsersData[i].rowcheck = true;
+              // let checkId = document.getElementsByClassName('checkboxUN')[i] as HTMLInputElement;
+              // if(checkId !=undefined)
+              // checkId.checked = true;
             }
           }
         }
@@ -122,6 +132,9 @@ export class DefaultComponent implements OnInit {
             this.TenantItems.push(map);
           }
         }
+        else{
+          this.toastrService.danger("No Tenant found");
+        }
 
         this.loading = false;
       });
@@ -129,6 +142,7 @@ export class DefaultComponent implements OnInit {
 
   OnclickMenu(evt){
     this.showNewBtn = false;
+    this.showForm = true;
     let select = [];
     let Tenant = evt.srcElement.innerText;
     this.TenantId = Tenant;
@@ -147,13 +161,11 @@ export class DefaultComponent implements OnInit {
           this.ProductRowSelected = (e: RowArgs) => select.indexOf(e.dataItem.OPTM_PRODCODE) >=0 ;
           if(data[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE){
             this.gridViewData[i].EXTNCODE = data[j].EXTNCODE;
-            let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
-            checkId.checked = true;
+            this.gridViewData[i].rowcheck = true;
+            // let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
+            // checkId.checked = true;
           }
-          // else{
-          //   let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
-          //   checkId.checked = false;
-          // }
+          
         }
        }
       // this.loadingGrid = false;
@@ -162,12 +174,22 @@ export class DefaultComponent implements OnInit {
 
   NewRecord(){
     this.showNewBtn = true;
-    this.getProductsList();
-    this.setUncheckCheckbox();
-    //this.gridViewData = this.gridProductsData;
+    this.showForm = true;
+    this.loading = true;
+   // this.getProductsList();
+    //this.setUncheckCheckbox();
+       
+   for(var i=0; i<this.gridViewData.length; i++){
+    this.gridViewData[i].EXTNCODE = 0;
+    this.gridViewData[i].rowcheck = false;
+   }
 
+   for(var i=0; i<this.gridUsersData.length; i++){
+    this.gridUsersData[i].rowcheck = false;
+   }
     this.TenantId = '';
-    this.getUsersList('');
+    this.loading = false;
+   // this.getUsersList('');
   }
 
   OnDropDownBlur(event){
@@ -336,6 +358,10 @@ export class DefaultComponent implements OnInit {
       logic: 'and',
       filters: []
     };
+  }
+
+  CancelRecord(){
+    this.showForm = false;
   }
 
 }

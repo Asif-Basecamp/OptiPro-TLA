@@ -3,6 +3,7 @@
   </nb-menu>
 </nb-card>
 
+
 <div class="dashboard-right">
   <div class="custom-accordian grid-accordian-open" id="custom-accordian">
 
@@ -17,10 +18,18 @@
             <path d="M9 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2z"></path>
             <path d="M19 13h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2z"></path>
           </svg>
-          <span>License Data</span>
-        </nb-card-header>
+          <span>License Assignment </span>
+          <span><button nbButton size="small" class="btn-small btn btn-success ml-auto" (click)="NewRecord()">New</button> </span>
+         
+        </nb-card-header>       
+
         <nb-card-body class="grid-accordian-body" id="grid-accordian-body">
-          <div class="d-flex flex-100 flex-direction-column h-100 with-control-bar">
+
+          <div *ngIf="!showForm">
+            hsh
+          </div>
+
+          <div *ngIf="showForm" class="d-flex flex-100 flex-direction-column h-100 with-control-bar">
             <div class="row mb-3">
               <div class="col-xs-12 col-md-4 col-lg-3">
                 <form #TenantForm="ngForm">
@@ -33,26 +42,13 @@
                   </div>
                 </form>
               </div>
-              <div class="col-xs-12 col-md-4 col-lg-3">
-
-                <!-- <div class="form-group">
-                  <label for=" ">Company</label>
-                  
-                  <select type="company" class="form-control" name="form-company" [(ngModel)]="selectedValue" id="form-company" [disabled]="disableDropDown"
-                        (change)="OnDropDownBlur($event)">
-                         
-                  <option *ngFor="let cmp of listItems" name="selcompany" [ngValue]="cmp">
-                     {{cmp.dbName}}</option> 
-                  </select> 
-                </div> -->
-
-              </div>
             </div>
             <nb-card accent="primary" class="no-shadow h-auto" size="xsmall" [nbSpinner]="loadingGrid" nbSpinnerStatus="primary" nbSpinnerSize="xlarge"
             nbSpinnerMessage="Please Wait">
+            <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
 
             <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
-              [selectable]="true" (selectionChange)="gridRowSelectionChange($event)" [rowSelected]="ProductRowSelected"
+              [selectable]="true" 
               [resizable]="true" [ngStyle]="{ 'cursor': 'pointer', 'max-height': '300px'}">
 
               <ng-template kendoGridToolbarTemplate>
@@ -67,7 +63,7 @@
               </ng-template>
 
 
-              <kendo-grid-column field="#" title="Sr. No." class="text-center" headerClass="text-center" width="52"></kendo-grid-column>
+              <kendo-grid-column field="SNO" title="#" class="text-center" headerClass="text-center" width="52"></kendo-grid-column>
 
               <kendo-grid-checkbox-column field="checkbox" title="Select" [width]="33" class="text-center" headerClass="text-center">
                 <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
@@ -82,7 +78,7 @@
                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                   <div class="k-form-field d-flex center-checkbox"> <!--[kendoGridSelectionCheckbox]="rowIndex"-->
 
-                    <input type="checkbox" name="view_child_checkbox" #checkedvalueview [checked]=selectallprod id="view_child_checkbox{{rowIndex}}"
+                    <input type="checkbox" name="view_child_checkbox" #checkedvalueview [checked]=dataItem.rowcheck id="view_child_checkbox{{rowIndex}}"
                       class="k-checkbox checkboxFN" (change)="selectProduct(checkedvalueview.checked,dataItem)" />
                     <label class="k-checkbox-label" for="view_child_checkbox{{rowIndex}}"></label>
 
@@ -96,7 +92,7 @@
 
               <kendo-grid-column field="EXTNCODE" title="License Count">
                 <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
-                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" (change)="onLicenseCountChange(licenseCount.value,idx)"
+                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="!dataItem.rowcheck" (change)="onLicenseCountChange(licenseCount.value,idx)"
                     value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
                 </ng-template>
 
@@ -123,7 +119,7 @@
               </ng-template>
 
 
-              <kendo-grid-column field="#" title="Sr. No." width="15" class="text-center" headerClass="text-center"></kendo-grid-column>
+              <kendo-grid-column field="SNO" title="#" width="15" class="text-center" headerClass="text-center"></kendo-grid-column>
 
               <kendo-grid-checkbox-column field="checkbox" title="Select" [width]="15" class="text-center" headerClass="text-center">
 
@@ -140,7 +136,7 @@
                     <!-- <input #chkSelection type="checkbox" [checked]='di.OldData' id="chkbox-1" class="k-checkbox"
                                 name="columnfilter" />                            
                             <label class="k-checkbox-label" for="chkbox-1"></label> -->
-                    <input type="checkbox" name="child_checkbox" #checkedvalue [checked]=selectalluser id="child_checkbox_{{rowIndex}}"
+                    <input type="checkbox" name="child_checkbox" #checkedvalue [checked]=dataItem.rowcheck id="child_checkbox_{{rowIndex}}"
                       class="k-checkbox checkboxUN" (change)="selectUser(checkedvalue.checked,dataItem)" />
                     <label class="k-checkbox-label" for="child_checkbox_{{rowIndex}}"></label>
 
@@ -159,8 +155,8 @@
             <div class="control-bar border-top d-flex">
               <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" (click)="SaveRecord()"
                 [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Save</button>
-              <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="NewRecord()">Cancel</button>
-              <button nbButton size="small" class="btn-small btn btn-success ml-auto" (click)="NewRecord()">New</button>
+              <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>
+              
             </div>
 
           </nb-card>
