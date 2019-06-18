@@ -41,14 +41,14 @@ GetUserList(optiProTLAURL:string,TenantKey:string):Observable<any>{
 return this.httpClient.post(optiProTLAURL +"LicenseAssignment/GetUserList",jObject,this.httpOptions);
 }
 
-GetUserbyProductList(optiProTLAURL:string,CompanyDBID:string):Observable<any>{
+// GetUserbyProductList(optiProTLAURL:string,CompanyDBID:string):Observable<any>{
    
-  let jObject:any={ ItemList: JSON.stringify([{ 
-    CompanyId: CompanyDBID,
-    Products: 'CNF'
-  }]) };
-return this.httpClient.post(optiProTLAURL +"LicenseAssignment/GetUserbyProductList",jObject,this.httpOptions);
-}
+//   let jObject:any={ ItemList: JSON.stringify([{ 
+//     CompanyId: CompanyDBID,
+//     Products: 'CNF'
+//   }]) };
+// return this.httpClient.post(optiProTLAURL +"LicenseAssignment/GetUserbyProductList",jObject,this.httpOptions);
+// }
 
 GetTenantList(optiProTLAURL:string):Observable<any>{
    
