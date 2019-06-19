@@ -3,6 +3,7 @@
 $icomoon-font-family: "optipro-icon" !default;
 $icomoon-font-path: "../../../assets/fonts" !default;
 
+$optipro-icon-tenant: "\e951";
 $optipro-icon-pdf-file: "\e94f";
 $optipro-icon-xls-file: "\e950";
 $optipro-icon-clock: "\e94e";
@@ -111,6 +112,11 @@ $optipro-icon-reload: "\e93e";
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.optipro-icon-tenant {
+  &:before {
+    content: $optipro-icon-tenant; 
+  }
 }
 .optipro-icon-pdf-file {
   &:before {
