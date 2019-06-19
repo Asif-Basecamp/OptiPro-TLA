@@ -39,6 +39,8 @@ export class DefaultComponent implements OnInit {
   public showForm: boolean = false;
   loadingGrid = false;
   public showsaveBtn: boolean = false;
+  public showViewGridPage:boolean = false;
+  public showUserGridPage:boolean = false;
 
   constructor(private httpClientSer: HttpClient,private licAsgnmt: LicenseService, private toastrService: NbToastrService,private sharedService:SharedServiceService) { }
 
@@ -84,14 +86,19 @@ export class DefaultComponent implements OnInit {
     this.licAsgnmt.GetProductsList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.gridViewData = data;
+        
         if(this.gridViewData != null && this.gridViewData != undefined){
           for(var i=0; i<this.gridViewData.length; i++){
             this.gridViewData[i].rowcheck = false;
           } 
+
+          if(this.gridViewData.length > 10)
+            this.showViewGridPage = true;
         }
         else{
           console.log("No products found!");
-        }                       
+        } 
+        
       });
   }
 
@@ -105,6 +112,9 @@ export class DefaultComponent implements OnInit {
           for(var i=0; i<this.gridUsersData.length; i++){
             this.gridUsersData[i].rowcheck = false;
           }
+
+          if(this.gridUsersData.length > 10)
+          this.showUserGridPage = true;
         }
         else{
           console.log("No user found!");
@@ -128,6 +138,7 @@ export class DefaultComponent implements OnInit {
 
   getTenantList(){
     this.loading = true;
+    this.TenantItems = [];
     this.licAsgnmt.GetTenantList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.TenantList = data;
@@ -135,11 +146,11 @@ export class DefaultComponent implements OnInit {
           for(let i=0; i<this.TenantList.length;i++){
             this.TenantItems.push(this.TenantList[i].TENANTKEY);
           }
-          this.sharedService.ShareDataTo(this.TenantItems);
         }
         else{
           this.toastrService.danger("No Tenant found");
-        }
+        }   
+        this.sharedService.ShareDataTo(this.TenantItems);    
         this.loading = false;
       });
   }
@@ -161,17 +172,25 @@ export class DefaultComponent implements OnInit {
     this.licAsgnmt.GetTenantListByName(this.arrConfigData[0].optiProTLAURL,this.TenantId).subscribe(
       data => {
 
-       for(let i =0; i<this.gridViewData.length; i++){
-        for(let j =0; j<data.length; j++){
-          if(data[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && data[j].EXTNCODE > 0){
-            this.gridViewData[i].EXTNCODE = data[j].EXTNCODE;
-            this.gridViewData[i].rowcheck = true;
-            // let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
-            // checkId.checked = true;
-          }          
+        if(data != null && data != undefined){
+          for(let i =0; i<this.gridViewData.length; i++){
+            for(let j =0; j<data.length; j++){
+              if(data[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && data[j].EXTNCODE > 0){
+                this.gridViewData[i].EXTNCODE = data[j].EXTNCODE;
+                this.gridViewData[i].rowcheck = true;
+                // let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
+                // checkId.checked = true;
+              }          
+            }
+            this.loading = false;
+           }
         }
-        this.loading = false;
-       }
+        else {
+          this.loading = false;
+          console.log("No tenant found!");
+        }
+
+       
     });
   }
 
@@ -194,10 +213,14 @@ export class DefaultComponent implements OnInit {
   }
 
   selectProduct(checkvalue,rowdata,index){
-    if(checkvalue == true)
-        this.gridViewData[index].rowcheck = true;        
-    else
+    if(checkvalue == true){
+      this.gridViewData[index].rowcheck = true;        
+    }       
+    else {
       this.gridViewData[index].rowcheck = false;        
+      this.gridViewData[index].EXTNCODE = 0;        
+    }
+      
   }
 
   selectUser(checkvalue,rowdata,index){   
@@ -311,10 +334,11 @@ export class DefaultComponent implements OnInit {
             else{
               this.toastrService.success("Record updated succesfully");
             } 
-        }  
+        } 
         
         this.showForm = false;
         this.loading = false;
+        this.getTenantList();
     },
     error => {
       this.loading = false;

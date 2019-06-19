@@ -49,7 +49,7 @@
             <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
 
             <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
-              [selectable]="false" 
+              [selectable]="false" [pageable]="showViewGridPage" [pageSize]="10"
               [resizable]="true" [ngStyle]="{'max-height': '300px'}">
 
               <ng-template kendoGridToolbarTemplate>
@@ -94,7 +94,7 @@
 
               <kendo-grid-column field="EXTNCODE" title="License Count">
                 <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
-                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="TenantId == ''" 
+                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control text-right" id="licenseCount" [disabled]="TenantId == ''" 
                     (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
                     value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
                 </ng-template>
@@ -103,7 +103,7 @@
             </kendo-grid>
 
             <kendo-grid class="mt-2" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
-              [selectable]="false" [resizable]="true"  [ngStyle]="{'max-height': '300px'}">
+              [selectable]="false" [pageable]="showUserGridPage" [pageSize]="10" [resizable]="true"  [ngStyle]="{'max-height': '300px'}">
 
               <ng-template kendoGridToolbarTemplate>
                 <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
