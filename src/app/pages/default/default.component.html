@@ -27,137 +27,138 @@
 
         <nb-card-body class="grid-accordian-body p-0" id="grid-accordian-body">
 
-            <div class="default-page-bg h-100" *ngIf="!showForm">
-              <div class="text-center opti-logo">
-                  <img src="assets/images/large-logo-alt.png" width="100%" alt="OptiPro ERP">
-                <div class="text-center opti_version-info w-100">
-                  Version <span></span>
+          <div class="default-page-bg h-100" *ngIf="!showForm">
+            <div class="text-center opti-logo">
+                <img src="assets/images/large-logo-alt.png" width="100%" alt="OptiPro ERP">
+              <div class="text-center opti_version-info w-100">
+                Version <span></span>
+                
+                <div>Copyright 2000-2019. All rights reserved.</div>
+              </div>
+            </div>
+          </div>
+
+          <form #TenantForm="ngForm" class="h-100" *ngIf="showForm">
+            <div class="d-flex flex-100 flex-direction-column h-100 with-control-bar px-3 py-3">
+              <div class="mb-3">
+                <div class="col-xs-12 col-md-4 col-lg-3 px-0">
                   
-                  <div>Copyright 2000-2019. All rights reserved.</div>
+                    <div class="form-group">
+                      <div class="d-md-flex d-lg-flex d-sm-flex align-items-center">
+                          <label for="" class="nowrap mr-2">Tenant Name</label>
+                          <input type="text" name="id" class="form-control" required #name=ngModel [(ngModel)]="TenantId"
+                            nbInput fieldSize="small" placeholder="Enter Tenant Id" autocomplete="off">
+                      </div>
+                      <small id="emailHelp" class="form-text text-muted opti_error-msg text-right w-100"
+                        *ngIf="TenantId.errors?.required && TenantId.touched">Enter
+                        Tenant Name</small>
+                    </div>
+                  
                 </div>
               </div>
-            </div>
-          <form #TenantForm="ngForm" class="h-100" *ngIf="showForm">
-          <div  class="d-flex flex-100 flex-direction-column h-100 with-control-bar px-3 py-3">
-            <div class="mb-3">
-              <div class="col-xs-12 col-md-4 col-lg-3 px-0">
-                
-                  <div class="form-group">
-                    <div class="d-md-flex d-lg-flex d-sm-flex align-items-center">
-                        <label for="" class="nowrap mr-2">Tenant Name</label>
-                        <input type="text" name="id" class="form-control" required #name=ngModel [(ngModel)]="TenantId"
-                          nbInput fieldSize="small" placeholder="Enter Tenant Id" autocomplete="off">
+              <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
+
+              <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
+                [selectable]="false"  [pageable]="showViewGridPage" [pageSize]="10"
+                [resizable]="true" [ngStyle]="{'max-height': '300px'}">
+
+                <ng-template kendoGridToolbarTemplate>
+                  <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
+                    <div class="k-form-field d-flex">
+                      <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridViewData)"
+                        id="FilterColumnView" [(ngModel)]="isColumnFilterView" class="k-checkbox" name="columnfilter" />
+
+                      <label class="k-checkbox-label" for="FilterColumnView">Enable Filter</label>
                     </div>
-                    <small id="emailHelp" class="form-text text-muted opti_error-msg text-right w-100"
-                      *ngIf="TenantId.errors?.required && TenantId.touched">Enter
-                      Tenant Name</small>
-                  </div>
-                
-              </div>
+                  </form>
+                </ng-template>
+
+
+                <kendo-grid-column field="SNO" title="#" class="text-center" headerClass="text-center" width="52">
+                </kendo-grid-column>
+
+                <kendo-grid-checkbox-column field="checkbox" title="Select" [width]="33" class="text-center"
+                  headerClass="text-center">
+                  <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
+                    <div class="k-form-field d-flex center-checkbox">
+                        <input type="checkbox" name="view_parent_checkbox" class="cursor-pointer" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"
+                        id="view_parent_checkbox{{rowIndex}}" [checked]=selectallprod class="k-checkbox">
+                      <label class="k-checkbox-label" for="user_parent_checkbox{{rowIndex}}"></label>
+                    </div>
+                  </ng-template>
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <div class="k-form-field d-flex center-checkbox">
+                      <!--[kendoGridSelectionCheckbox]="rowIndex"-->
+                      <input type="checkbox" name="view_child_checkbox" #checkedvalueview [checked]=dataItem.rowcheck id="view_child_checkbox{{rowIndex}}"
+                        class="k-checkbox checkboxFN cursor-pointer" [disabled]="TenantId == ''" (change)="selectProduct(checkedvalueview.checked,dataItem,rowIndex)" />
+                      <label class="k-checkbox-label" for="view_child_checkbox{{rowIndex}}"></label>
+                    </div>
+                  </ng-template>
+                </kendo-grid-checkbox-column>
+
+                <kendo-grid-column field="OPTM_PRODCODE" title="Product Code">
+                </kendo-grid-column>
+
+                <kendo-grid-column field="OPTM_PRODDESC" title="Product Description">
+                </kendo-grid-column> 
+
+                <kendo-grid-column field="EXTNCODE" title="License Count">
+                  <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
+                    <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="TenantId == ''" 
+                      (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
+                      value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
+                  </ng-template>
+                </kendo-grid-column>                          
+
+              </kendo-grid>
+
+              <kendo-grid class="mt-4" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
+                [selectable]="false"  [pageable]="showUserGridPage" [pageSize]="10" [resizable]="true" [ngStyle]="{'max-height': '300px'}">
+
+                <ng-template kendoGridToolbarTemplate>
+                  <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
+                    <div class="k-form-field d-flex">
+                      <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridUsersData)"
+                        id="FilterColumnUser" [(ngModel)]="isColumnFilterUser" class="k-checkbox" name="columnfilter" />
+                      <label class="k-checkbox-label" for="FilterColumnUser">Enable Filter</label>
+                    </div>
+                  </form>
+                </ng-template>
+
+                <kendo-grid-column field="SNO" title="#" width="52" class="text-center" headerClass="text-center">
+                </kendo-grid-column>
+
+                <kendo-grid-checkbox-column field="checkbox" title="Select" width="33" class="text-center"
+                  headerClass="text-center">
+
+                  <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
+                    <div class="k-form-field d-flex center-checkbox">
+                      <input type="checkbox" name="user_parent_checkbox" class="cursor-pointer" #Selectuserallcheckedvalue (change)="user_Selectall_checkbox_checked(Selectuserallcheckedvalue.checked)"
+                        id="user_parent_checkbox{{rowIndex}}" [checked]=selectalluser class="k-checkbox">
+                      <label class="k-checkbox-label" for="user_parent_checkbox{{rowIndex}}"></label>
+                    </div>
+                  </ng-template>
+
+                  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                    <div class="k-form-field d-flex center-checkbox">
+                      <input type="checkbox" name="child_checkbox" #checkedvalue [checked]=dataItem.rowcheck id="child_checkbox_{{rowIndex}}"
+                        class="k-checkbox checkboxUN cursor-pointer" [disabled]="TenantId == ''" (change)="selectUser(checkedvalue.checked,dataItem,rowIndex)" />
+                      <label class="k-checkbox-label" for="child_checkbox_{{rowIndex}}"></label>
+                    </div>
+                  </ng-template>
+                </kendo-grid-checkbox-column>
+                <kendo-grid-column field="OPTM_USERCODE" title="Users"></kendo-grid-column>
+              </kendo-grid>
             </div>
-            <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
 
-            <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
-              [selectable]="false" 
-              [resizable]="true" [ngStyle]="{'max-height': '300px'}">
-
-              <ng-template kendoGridToolbarTemplate>
-                <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
-                  <div class="k-form-field d-flex">
-                    <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridViewData)"
-                      id="FilterColumnView" [(ngModel)]="isColumnFilterView" class="k-checkbox" name="columnfilter" />
-
-                    <label class="k-checkbox-label" for="FilterColumnView">Enable Filter</label>
-                  </div>
-                </form>
-              </ng-template>
-
-
-              <kendo-grid-column field="SNO" title="#" class="text-center" headerClass="text-center" width="52">
-              </kendo-grid-column>
-
-              <kendo-grid-checkbox-column field="checkbox" title="Select" [width]="33" class="text-center"
-                headerClass="text-center">
-                <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
-                  <div class="k-form-field d-flex center-checkbox">
-                      <input type="checkbox" name="view_parent_checkbox" class="cursor-pointer" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"
-                      id="view_parent_checkbox{{rowIndex}}" [checked]=selectallprod class="k-checkbox">
-                    <label class="k-checkbox-label" for="user_parent_checkbox{{rowIndex}}"></label>
-                  </div>
-                </ng-template>
-                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                  <div class="k-form-field d-flex center-checkbox">
-                    <!--[kendoGridSelectionCheckbox]="rowIndex"-->
-                    <input type="checkbox" name="view_child_checkbox" #checkedvalueview [checked]=dataItem.rowcheck id="view_child_checkbox{{rowIndex}}"
-                      class="k-checkbox checkboxFN cursor-pointer" [disabled]="TenantId == ''" (change)="selectProduct(checkedvalueview.checked,dataItem,rowIndex)" />
-                    <label class="k-checkbox-label" for="view_child_checkbox{{rowIndex}}"></label>
-                  </div>
-                </ng-template>
-              </kendo-grid-checkbox-column>
-
-              <kendo-grid-column field="OPTM_PRODCODE" title="Product Code">
-              </kendo-grid-column>
-
-              <kendo-grid-column field="OPTM_PRODDESC" title="Product Description">
-              </kendo-grid-column> 
-
-              <kendo-grid-column field="EXTNCODE" title="License Count">
-                <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
-                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="TenantId == ''" 
-                    (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
-                    value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
-                </ng-template>
-              </kendo-grid-column>                          
-
-            </kendo-grid>
-
-            <kendo-grid class="mt-4" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
-              [selectable]="false" [resizable]="true"  [ngStyle]="{'max-height': '300px'}">
-
-              <ng-template kendoGridToolbarTemplate>
-                <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
-                  <div class="k-form-field d-flex">
-                    <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridUsersData)"
-                      id="FilterColumnUser" [(ngModel)]="isColumnFilterUser" class="k-checkbox" name="columnfilter" />
-                    <label class="k-checkbox-label" for="FilterColumnUser">Enable Filter</label>
-                  </div>
-                </form>
-              </ng-template>
-
-              <kendo-grid-column field="SNO" title="#" width="52" class="text-center" headerClass="text-center">
-              </kendo-grid-column>
-
-              <kendo-grid-checkbox-column field="checkbox" title="Select" width="33" class="text-center"
-                headerClass="text-center">
-
-                <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
-                  <div class="k-form-field d-flex center-checkbox">
-                    <input type="checkbox" name="user_parent_checkbox" class="cursor-pointer" #Selectuserallcheckedvalue (change)="user_Selectall_checkbox_checked(Selectuserallcheckedvalue.checked)"
-                      id="user_parent_checkbox{{rowIndex}}" [checked]=selectalluser class="k-checkbox">
-                    <label class="k-checkbox-label" for="user_parent_checkbox{{rowIndex}}"></label>
-                  </div>
-                </ng-template>
-
-                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                  <div class="k-form-field d-flex center-checkbox">
-                    <input type="checkbox" name="child_checkbox" #checkedvalue [checked]=dataItem.rowcheck id="child_checkbox_{{rowIndex}}"
-                      class="k-checkbox checkboxUN cursor-pointer" [disabled]="TenantId == ''" (change)="selectUser(checkedvalue.checked,dataItem,rowIndex)" />
-                    <label class="k-checkbox-label" for="child_checkbox_{{rowIndex}}"></label>
-                  </div>
-                </ng-template>
-              </kendo-grid-checkbox-column>
-              <kendo-grid-column field="OPTM_USERCODE" title="Users"></kendo-grid-column>
-            </kendo-grid>
-          </div>
-
-          <div class="control-bar border-top d-flex px-3 pt-2">
-            <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="showsaveBtn" (click)="SaveRecord('New')"
-              [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Save</button>
-            <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!showsaveBtn" (click)="SaveRecord('Update')"
-              [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Update</button>
-            <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>                
-          </div>
-        </form>
+            <div class="control-bar border-top d-flex px-3 pt-2">
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="showsaveBtn" (click)="SaveRecord('New')"
+                [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Save</button>
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!showsaveBtn" (click)="SaveRecord('Update')"
+                [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Update</button>
+              <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>                
+            </div>
+           </form>
           
         </nb-card-body>
       </nb-card>

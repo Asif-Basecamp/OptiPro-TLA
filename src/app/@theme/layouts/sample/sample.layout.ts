@@ -80,6 +80,7 @@ export class SampleLayoutComponent implements OnDestroy {
     private sharedService: SharedServiceService) {
 
       this.sharedService.commonDataTo$.subscribe(data => {
+        this.MenuData = [];
         if(data != null && data != undefined){
           this.MenuData = data;
         }
