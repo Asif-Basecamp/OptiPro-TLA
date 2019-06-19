@@ -7,8 +7,6 @@ import {NbToastrService} from '@nebular/theme';
 import { CommonData } from "src/app/Data/CommonData";
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { ThemeSwitcherListComponent } from 'src/app/@theme/components';
-//import { DefaultComponent } from 'src/app/pages/default/default.component';
-import { SampleLayoutComponent } from 'src/app/@theme/layouts/sample/sample.layout';
 import { SharedServiceService } from 'src/app/shared-service.service';
 
 @Component({
@@ -24,7 +22,6 @@ export class DefaultComponent implements OnInit {
   public selectedValue: any = [];
   public listItems: any = [];
   public gridViewData: any = [];
-  public gridProductsData: any = [];
   public gridUsersData: any = [];
   public TenantList: any = [];
   public TenantItems: any = [];
@@ -52,7 +49,6 @@ export class DefaultComponent implements OnInit {
 
     this.sharedService.commonDataFrom$.subscribe(data=>{
       if(data != null && data != undefined){
-      console.log("Asif Data",data);
       this.OnclickMenu(data);
       }
     });
@@ -84,36 +80,49 @@ export class DefaultComponent implements OnInit {
   }
 
   getProductsList(){
-    //this.loading = true;
+    
     this.licAsgnmt.GetProductsList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.gridViewData = data;
-        this.gridProductsData = data;
-        for(var i=0; i<this.gridViewData.length; i++){
-          this.gridViewData[i].rowcheck = false;
-        }                
-      //  this.loading = false;
+        if(this.gridViewData != null && this.gridViewData != undefined){
+          for(var i=0; i<this.gridViewData.length; i++){
+            this.gridViewData[i].rowcheck = false;
+          } 
+        }
+        else{
+          console.log("No products found!");
+        }                       
       });
   }
 
   getUsersList(paramTenant){
-    //this.loading = true;
+    
     this.licAsgnmt.GetUserList(this.arrConfigData[0].optiProTLAURL,paramTenant).subscribe(
       data => {
         this.gridUsersData = data;
 
-        for(var i=0; i<this.gridUsersData.length; i++){
-          this.gridUsersData[i].rowcheck = false;
+        if(this.gridUsersData != null && this.gridUsersData != undefined){
+          for(var i=0; i<this.gridUsersData.length; i++){
+            this.gridUsersData[i].rowcheck = false;
+          }
         }
+        else{
+          console.log("No user found!");
+        }        
 
         if(paramTenant != ''){
+         if(this.gridUsersData != null && this.gridUsersData != undefined){
           for(let i=0; i<this.gridUsersData.length; i++){
-            if(this.gridUsersData[i].TENANTKEY == paramTenant){
+            if(this.gridUsersData[i].OPTM_TENANTKEY == paramTenant){
               this.gridUsersData[i].rowcheck = true;
             }
           }
         }
-       // this.loading = false;
+        else{
+          console.log("No user found!");
+        }
+        }
+       
       });
   }
 
@@ -124,9 +133,6 @@ export class DefaultComponent implements OnInit {
         this.TenantList = data;
         if(this.TenantList !=null && this.TenantList != undefined){
           for(let i=0; i<this.TenantList.length;i++){
-            let map ={};
-            map['title'] = this.TenantList[i].TENANTKEY;
-            map['icon'] = 'optipro-icon-list';
             this.TenantItems.push(this.TenantList[i].TENANTKEY);
           }
           this.sharedService.ShareDataTo(this.TenantItems);
@@ -138,32 +144,25 @@ export class DefaultComponent implements OnInit {
       });
   }
 
-  OnclickMenu(evt){
-
-   // let Tenant = evt.srcElement.innerText;
-   let Tenant = evt;
-    if(Tenant == undefined || Tenant == null || Tenant == ''){
+  OnclickMenu(tenantName){
+    
+    if(tenantName == undefined || tenantName == null || tenantName == ''){
       return false;
     }
 
     this.showForm = true;
     this.showsaveBtn = false;
     this.loading = true;
-    //let select = [];
-
-    this.TenantId = Tenant;
+    this.TenantId = tenantName;
     this.getProductsList();
     this.getUsersList(this.TenantId);
-    //this.setUncheckCheckbox();
-   // this.loadingGrid = true;
+    
     
     this.licAsgnmt.GetTenantListByName(this.arrConfigData[0].optiProTLAURL,this.TenantId).subscribe(
       data => {
 
        for(let i =0; i<this.gridViewData.length; i++){
         for(let j =0; j<data.length; j++){
-          //select.push(data[j].PRODUCTKEY);
-          //this.ProductRowSelected = (e: RowArgs) => select.indexOf(e.dataItem.OPTM_PRODCODE) >=0 ;
           if(data[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && data[j].EXTNCODE > 0){
             this.gridViewData[i].EXTNCODE = data[j].EXTNCODE;
             this.gridViewData[i].rowcheck = true;
@@ -173,11 +172,6 @@ export class DefaultComponent implements OnInit {
         }
         this.loading = false;
        }
-      // this.loadingGrid = false;
-      
-       // Pass subscriber Data
-       this.sharedService.ShareDataTo(this.gridViewData);
-
     });
   }
 
@@ -195,12 +189,6 @@ export class DefaultComponent implements OnInit {
   }
 
   onLicenseCountChange(value,rowindex){
-    // for (let i = 0; i < this.gridViewData.length; ++i) {
-    //   if (i === rowindex) {
-    //   this.gridViewData[i].EXTNCODE = value;
-    //   this.gridViewData[i].rowcheck = true;
-    //   }
-    // }
     this.gridViewData[rowindex].EXTNCODE = value;
     this.gridViewData[rowindex].rowcheck = true;    
   }
@@ -220,18 +208,6 @@ export class DefaultComponent implements OnInit {
   }
 
   on_Selectall_checkbox_checked(checkall){
-
-    // this.ProductArr = [];
-    // if(checkall == true){
-    //   this.selectallprod = true;
-    //   for(let i=0; i<this.gridViewData.length; i++){
-    //     this.ProductArr.push(this.gridViewData.OPTM_USERCODE);
-    //   }
-    // }
-    // else{
-    // this.selectallprod = false;
-    // }
-
     if(checkall == true){
       for(let i=0; i<this.gridViewData.length;i++){
         this.gridViewData[i].rowcheck = true;
@@ -242,21 +218,9 @@ export class DefaultComponent implements OnInit {
         this.gridViewData[i].rowcheck = false;
       }
     }
-
   }
 
-  user_Selectall_checkbox_checked(checkall){
-    // this.UserArr = [];
-    // if(checkall == true){
-    //   this.selectalluser = true;
-    //   for(let i=0; i<this.gridUsersData.length; i++){
-    //     this.UserArr.push(this.gridUsersData.OPTM_USERCODE);
-    //   }
-    // }
-    // else{
-    // this.selectalluser = false;
-    // }
-
+  user_Selectall_checkbox_checked(checkall){    
     if(checkall == true){
       for(let i=0; i<this.gridUsersData.length;i++){
         this.gridUsersData[i].rowcheck = true;
@@ -267,7 +231,6 @@ export class DefaultComponent implements OnInit {
         this.gridUsersData[i].rowcheck = false;
       }
     }
-
   }
 
   GridViewSelected(){

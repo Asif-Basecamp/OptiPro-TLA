@@ -80,7 +80,6 @@ export class SampleLayoutComponent implements OnDestroy {
 
       this.sharedService.commonDataTo$.subscribe(data => {
         if(data != null && data != undefined){
-          console.log("Sheetal Data ctr", data);
           this.MenuData = data;
         }
         
@@ -122,8 +121,7 @@ export class SampleLayoutComponent implements OnDestroy {
   }
 
   onClickData(data:string){
-    this.sharedService.ShareDataFrom(data);
-    
+    this.sharedService.ShareDataFrom(data);    
   }
 
   ngOnInit() {
@@ -134,15 +132,4 @@ export class SampleLayoutComponent implements OnDestroy {
  
   }
 
-  public d: any;
-
-  Onclick(evt) {
-
-
-
-    //  this.DefComp.OnclickMenu(evt)
-    //  .subscribe(data=> this.d = data); 
-
-
-  }
 }
