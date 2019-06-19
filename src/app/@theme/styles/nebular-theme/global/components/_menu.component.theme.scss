@@ -5,7 +5,7 @@
  */
 
 @mixin nb-menu-theme() {
-  nb-menu {
+  nb-menu, .menu-items-list {
     font-family: nb-theme(menu-font-family);
     font-size: nb-theme(menu-font-size);
     font-weight: nb-theme(menu-font-weight);

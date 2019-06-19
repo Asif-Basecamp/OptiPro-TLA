@@ -17,7 +17,7 @@ import { StateService } from '../../../@core/utils';
 import { SharedServiceService } from 'src/app/shared-service.service';
 
 // TODO: move layouts into the framework
-@Component({
+@Component({ 
   selector: 'ngx-sample-layout',
   styleUrls: ['./sample.layout.scss'],
   template: `
@@ -26,14 +26,15 @@ import { SharedServiceService } from 'src/app/shared-service.service';
         <opti-header [position]="sidebar.id === 'start' ? 'normal': 'inverse'"></opti-header>
       </nb-layout-header>
 
-      <nb-sidebar class="menu-sidebar"
-                   tag="menu-sidebar"
-                   responsive
-                   [end]="sidebar.id === 'end'">
-                  <ul>
-                  <li *ngFor="let item of MenuData; index as i; trackBy: trackByFn">
-                  <span (click)="onClickData(item)">{{item}}</span></li>
-                  </ul>
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive [end]="sidebar.id === 'end'">
+        <input [(ngModel)]="searchText" type="text" name="search" class="form-control mt-3" nbInput fieldSize="small" placeholder="Search Tenant" autocomplete="off">
+        <div class="menu-items-list">
+          <ul class="menu-items">
+            <li class="menu-item" *ngFor="let item of MenuData | filter : searchText; index as i; trackBy: trackByFn ">
+              <a (click)="onClickData(item)"><i class="menu-icon optipro-icon-tenant"></i><span class="menu-title">{{item}}</span></a>
+            </li>
+          </ul>
+        </div>
       </nb-sidebar>
 
       <nb-layout-column class="main-content">

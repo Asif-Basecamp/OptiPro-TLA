@@ -1283,6 +1283,14 @@ col.k-sorted,th.k-sorted {
 .k-checkbox:checked + .k-checkbox-label::before, .k-checkbox:checked:focus + .k-checkbox-label::before {
   color: nb-theme(color-primary);
 }
+.k-checkbox[disabled] + .k-checkbox-label{
+  cursor: not-allowed;
+}
+.k-checkbox[disabled] + .k-checkbox-label::before{
+  cursor: not-allowed;
+  color: nb-theme(form-control-border-color);
+  opacity: .7;
+}
 .k-checkbox-label {
   cursor: pointer;
   margin: 0;

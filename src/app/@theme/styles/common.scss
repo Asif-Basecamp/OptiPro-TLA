@@ -42,7 +42,9 @@ body.opti_account-module {
         min-height: initial !important;
     }
 }
-
+.disabled,[disabled]{
+    cursor: not-allowed;
+}
 .default-page-bg{
     width: 100%;
     display:flex;
@@ -51,7 +53,7 @@ body.opti_account-module {
     justify-items: center;    
     position: relative;  
     overflow: hidden;
-    border-radius: nb-theme(card-border-radius);  
+    border-radius: 0 0 nb-theme(card-border-radius) nb-theme(card-border-radius);  
     &:before {
         background: url('../../../assets/images/background2.jpg');
         background-size: cover;
@@ -81,22 +83,15 @@ body.opti_account-module {
 }
 
 .opti-logo{
-    color:#fff;
+    color:#212529;
     font-family: Exo;
     font-size: 3rem;
     position: relative;
     z-index: 100;
     margin: 0 auto;
-    background: rgba(0,0,0,0.3);
+    background: rgba(255, 255, 255, 0.9);
     padding: 50px 40px 40px 40px;
     border-radius: 0.375rem;
-    svg{
-        margin-right: 10px;
-        width:70px;
-        path{
-            fill:#fff;
-        }
-    }
 }
 
 .opti_version-info{
