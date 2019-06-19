@@ -1,15 +1,20 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input, EventEmitter, Output, Injectable, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { delay, withLatestFrom, takeWhile } from 'rxjs/operators';
+import { DefaultComponent } from '../../../pages/default/default.component';
+
+
 import {
   NbMediaBreakpoint,
   NbMediaBreakpointsService,
   NbMenuItem,
   NbMenuService,
   NbSidebarService,
-  NbThemeService,
+  NbThemeService
+
 } from '@nebular/theme';
 
 import { StateService } from '../../../@core/utils';
+import { SharedServiceService } from 'src/app/shared-service.service';
 
 // TODO: move layouts into the framework
 @Component({
@@ -25,7 +30,10 @@ import { StateService } from '../../../@core/utils';
                    tag="menu-sidebar"
                    responsive
                    [end]="sidebar.id === 'end'">
-        <ng-content select="nb-menu"></ng-content>
+                  <ul>
+                  <li *ngFor="let item of MenuData; index as i; trackBy: trackByFn">
+                  <span (click)="onClickData(item)">{{item}}</span></li>
+                  </ul>
       </nb-sidebar>
 
       <nb-layout-column class="main-content">
@@ -37,14 +45,20 @@ import { StateService } from '../../../@core/utils';
       </nb-layout-column>
 
       <nb-layout-column class="small" *ngIf="layout.id === 'three-column'">
-        <nb-menu [items]="subMenu"></nb-menu>
+        // <nb-menu [items]="subMenu"></nb-menu>
+        // <nb-menu class="cursor-pointer" (click)="Onclick($event)" [items]="TenantItems">
+        // </nb-menu>
+        <nb-menu>
+        <button>test data from </button> 
+        </nb-menu>
       </nb-layout-column>
       
     </nb-layout>
   `,
 })
 export class SampleLayoutComponent implements OnDestroy {
-
+  
+  public MenuData: any = [];
   subMenu: NbMenuItem[] = [
     {
       title: 'PAGE LEVEL MENU',
@@ -58,10 +72,20 @@ export class SampleLayoutComponent implements OnDestroy {
   currentTheme: string;
 
   constructor(protected stateService: StateService,
-              protected menuService: NbMenuService,
-              protected themeService: NbThemeService,
-              protected bpService: NbMediaBreakpointsService,
-              protected sidebarService: NbSidebarService) {
+    protected menuService: NbMenuService,
+    protected themeService: NbThemeService,
+    protected bpService: NbMediaBreakpointsService,
+    protected sidebarService: NbSidebarService,
+    private sharedService: SharedServiceService) {
+
+      this.sharedService.commonDataTo$.subscribe(data => {
+        if(data != null && data != undefined){
+          console.log("Sheetal Data ctr", data);
+          this.MenuData = data;
+        }
+        
+      })
+
     this.stateService.onLayoutState()
       .pipe(takeWhile(() => this.alive))
       .subscribe((layout: string) => this.layout = layout);
@@ -90,10 +114,35 @@ export class SampleLayoutComponent implements OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.currentTheme = theme.name;
-    });
+      });
   }
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  onClickData(data:string){
+    this.sharedService.ShareDataFrom(data);
+    
+  }
+
+  ngOnInit() {
+  
+  }
+
+  ngOnChange(){
+ 
+  }
+
+  public d: any;
+
+  Onclick(evt) {
+
+
+
+    //  this.DefComp.OnclickMenu(evt)
+    //  .subscribe(data=> this.d = data); 
+
+
   }
 }

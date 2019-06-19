@@ -1,7 +1,7 @@
-<nb-card>
+<!-- <nb-card>
   <nb-menu class="cursor-pointer" (click)="OnclickMenu($event)" [items]="TenantItems">
   </nb-menu>
-</nb-card>
+</nb-card> -->
 
 
 <div class="dashboard-right">
@@ -19,6 +19,7 @@
             <path d="M19 13h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2z"></path>
           </svg>
           <span>License Assignment </span>
+          
           <span><button nbButton size="small" class="btn-small btn btn-success ml-auto" (click)="NewRecord()">New</button> </span>
          
         </nb-card-header>       
@@ -48,8 +49,8 @@
             <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
 
             <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
-              [selectable]="true" 
-              [resizable]="true" [ngStyle]="{ 'cursor': 'pointer', 'max-height': '300px'}">
+              [selectable]="false" 
+              [resizable]="true" [ngStyle]="{'max-height': '300px'}">
 
               <ng-template kendoGridToolbarTemplate>
                 <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
@@ -69,7 +70,7 @@
                 <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                   <div class="k-form-field d-flex center-checkbox">
                     <!-- <div class="{{dataItem.EXTNCODE != '' ? 'k-disabled' : ''}}"></div> -->
-                    <input type="checkbox" name="view_parent_checkbox" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"
+                    <input type="checkbox" name="view_parent_checkbox" class="cursor-pointer" #Selectallcheckedvalue (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"
                       id="view_parent_checkbox{{rowIndex}}" [checked]=selectallprod class="k-checkbox">
                     <label class="k-checkbox-label" for="view_parent_checkbox{{rowIndex}}"></label>
                   </div>
@@ -79,10 +80,8 @@
                   <div class="k-form-field d-flex center-checkbox"> <!--[kendoGridSelectionCheckbox]="rowIndex"-->
 
                     <input type="checkbox" name="view_child_checkbox" #checkedvalueview [checked]=dataItem.rowcheck id="view_child_checkbox{{rowIndex}}"
-                      class="k-checkbox checkboxFN" (change)="selectProduct(checkedvalueview.checked,dataItem)" />
+                      class="k-checkbox checkboxFN cursor-pointer" [disabled]="TenantId == ''" (change)="selectProduct(checkedvalueview.checked,dataItem,rowIndex)" />
                     <label class="k-checkbox-label" for="view_child_checkbox{{rowIndex}}"></label>
-
-                    <!-- <input class="k-checkbox" type="checkbox" id="vendor" name="vendor" [(ngModel)]="vendor" (change)="VendorCheck($event)"/> -->
                   </div>
                 </ng-template>
               </kendo-grid-checkbox-column>
@@ -90,23 +89,21 @@
               <kendo-grid-column field="OPTM_PRODCODE" title="Product Code">
               </kendo-grid-column>
 
+              <kendo-grid-column field="OPTM_PRODDESC" title="Product Description">
+              </kendo-grid-column> 
+
               <kendo-grid-column field="EXTNCODE" title="License Count">
                 <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
-                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="!dataItem.rowcheck" (change)="onLicenseCountChange(licenseCount.value,idx)"
+                  <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control" id="licenseCount" [disabled]="TenantId == ''" 
+                    (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
                     value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
                 </ng-template>
+              </kendo-grid-column>                          
 
-
-                <!-- <input [disabled]="dataItem.isTypeDisabled" type="text" class="form-control  form-control-sm row_type_value_code"
-                  id="type_value_code" (change)="on_typevalue_change(type_value.value,dataItem.rowindex, type_value_code.value, type_value_code)"
-                  value={{dataItem.type_value_code}} #type_value_code title={{dataItem.type_value_code}} /> -->
-
-              </kendo-grid-column>
-              <!-- <kendo-grid-column field="IsCommited" title="demo" width="80" class="text-center" headerClass="text-right"></kendo-grid-column> -->
             </kendo-grid>
 
             <kendo-grid class="mt-2" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
-              [selectable]="true" [resizable]="true"  [ngStyle]="{ 'cursor': 'pointer', 'max-height': '300px'}">
+              [selectable]="false" [resizable]="true"  [ngStyle]="{'max-height': '300px'}">
 
               <ng-template kendoGridToolbarTemplate>
                 <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
@@ -125,7 +122,7 @@
 
                 <ng-template kendoGridHeaderTemplate let-column let-rowIndex="rowIndex">
                   <div class="k-form-field d-flex center-checkbox">
-                    <input type="checkbox" name="user_parent_checkbox" #Selectuserallcheckedvalue (change)="user_Selectall_checkbox_checked(Selectuserallcheckedvalue.checked)"
+                    <input type="checkbox" name="user_parent_checkbox" class="cursor-pointer" #Selectuserallcheckedvalue (change)="user_Selectall_checkbox_checked(Selectuserallcheckedvalue.checked)"
                       id="user_parent_checkbox{{rowIndex}}" [checked]=selectalluser class="k-checkbox">
                     <label class="k-checkbox-label" for="user_parent_checkbox{{rowIndex}}"></label>
                   </div>
@@ -133,18 +130,9 @@
 
                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                   <div class="k-form-field d-flex center-checkbox">
-                    <!-- <input #chkSelection type="checkbox" [checked]='di.OldData' id="chkbox-1" class="k-checkbox"
-                                name="columnfilter" />                            
-                            <label class="k-checkbox-label" for="chkbox-1"></label> -->
                     <input type="checkbox" name="child_checkbox" #checkedvalue [checked]=dataItem.rowcheck id="child_checkbox_{{rowIndex}}"
-                      class="k-checkbox checkboxUN" (change)="selectUser(checkedvalue.checked,dataItem)" />
+                      class="k-checkbox checkboxUN cursor-pointer" [disabled]="TenantId == ''" (change)="selectUser(checkedvalue.checked,dataItem,rowIndex)" />
                     <label class="k-checkbox-label" for="child_checkbox_{{rowIndex}}"></label>
-
-                    <!-- <input type="checkbox" name="parent_checkbox" #Selectallcheckedvalue 
-                          (change)="on_Selectall_checkbox_checked(Selectallcheckedvalue.checked)"  id="parent_checkbox_{{rowIndex}}"  
-                          [checked]=selectall class="custom-control-input"> -->
-
-
                   </div>
                 </ng-template>
               </kendo-grid-checkbox-column>
@@ -153,8 +141,10 @@
             </kendo-grid>
 
             <div class="control-bar border-top d-flex">
-              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" (click)="SaveRecord()"
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="showsaveBtn" (click)="SaveRecord('New')"
                 [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Save</button>
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!showsaveBtn" (click)="SaveRecord('Update')"
+                [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Update</button>
               <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>
               
             </div>
