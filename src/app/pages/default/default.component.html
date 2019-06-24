@@ -2,7 +2,13 @@
   <nb-menu class="cursor-pointer" (click)="OnclickMenu($event)" [items]="TenantItems">
   </nb-menu>
 </nb-card> -->
-
+<style>
+  .opti_error-msg {
+      color: red !important;
+      font-size: 12px;
+      
+  }
+</style>
 
 <div class="dashboard-right">
   <div class="custom-accordian grid-accordian-open" id="custom-accordian">
@@ -103,13 +109,25 @@
                 <kendo-grid-column field="OPTM_PRODDESC" title="Product Description">
                 </kendo-grid-column> 
 
+                <kendo-grid-column field="TOTALASSIGNEDLIC" title="Total License Assigned" class="text-right">
+                </kendo-grid-column> 
+
                 <kendo-grid-column field="EXTNCODE" title="Tenant License Count">
                   <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
                     <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control text-right" id="licenseCount" [disabled]="TenantId == ''" 
                       (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
                       value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
+                     <div id="extcode{{idx}}">
+                      <small id="errorcode{{idx}}" class="form-text text-muted float-right opti_error-msg" 
+                         *ngIf="licenseCount.value > dataItem.REMAINING">
+                        Insufficient License Count 
+                      </small>
+                     </div>
                   </ng-template>
-                </kendo-grid-column>                          
+                </kendo-grid-column> 
+                
+                <kendo-grid-column field="REMAINING" title="Remaining" class="text-right">
+                </kendo-grid-column> 
 
               </kendo-grid>
 

@@ -37,10 +37,11 @@ export class DefaultComponent implements OnInit {
   loading = false;
   public showNewBtn:boolean = false;
   public showForm: boolean = false;
-  loadingGrid = false;
   public showsaveBtn: boolean = false;
   public showViewGridPage:boolean = false;
   public showUserGridPage:boolean = false;
+  public TenantDataArr: any =[];
+  public showErrorMsg: boolean = false;
 
   constructor(private httpClientSer: HttpClient,private licAsgnmt: LicenseService, private toastrService: NbToastrService,private sharedService:SharedServiceService) { }
 
@@ -59,8 +60,6 @@ export class DefaultComponent implements OnInit {
       data => {
         this.arrConfigData = data as string[];
         window.localStorage.setItem('arrConfigData', JSON.stringify(this.arrConfigData[0]));
-        this.getProductsList();
-        this.getUsersList('');
         this.getTenantList();
       },
       (err: HttpErrorResponse) => {
@@ -81,23 +80,49 @@ export class DefaultComponent implements OnInit {
     }
   }
 
-  getProductsList(){
+  ProductListNew(){
+    if(this.gridViewData != null && this.gridViewData != undefined){
+      for(var i=0; i<this.gridViewData.length; i++){
+        this.gridViewData[i].rowcheck = false;  
+      } 
+      /*this.gridViewData = this.gridViewData.filter(function(obj){
+        obj['EXTNCODE'] = 0;
+        return obj;
+      }); */ 
+      if(this.gridViewData.length > 10)
+        this.showViewGridPage = true;
+    }
+    else{
+      console.log("No products found!");
+    } 
+  }
+
+  ProductListUpdate(){
+
+    for(let i =0; i<this.gridViewData.length; i++){
+      for(let j =0; j<this.TenantDataArr.length; j++){
+
+        if(this.TenantDataArr[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && this.TenantDataArr[j].EXTNCODE > 0){
+            this.gridViewData[i].EXTNCODE = this.TenantDataArr[j].EXTNCODE;
+            this.gridViewData[i].rowcheck = true;
+        }
+      }
+    }
+
+  }
+
+  getProductsList(action){
+    this.loading = true;
     
     this.licAsgnmt.GetProductsList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.gridViewData = data;
-        
-        if(this.gridViewData != null && this.gridViewData != undefined){
-          for(var i=0; i<this.gridViewData.length; i++){
-            this.gridViewData[i].rowcheck = false;
-          } 
 
-          if(this.gridViewData.length > 10)
-            this.showViewGridPage = true;
-        }
-        else{
-          console.log("No products found!");
-        } 
+        if(action == 'New')
+        this.ProductListNew();
+        else
+        this.ProductListUpdate();
+        this.loading = false;
         
       });
   }
@@ -161,55 +186,58 @@ export class DefaultComponent implements OnInit {
       return false;
     }
 
+    this.loading = true;
+
     this.showForm = true;
     this.showsaveBtn = false;
-    this.loading = true;
     this.TenantId = tenantName;
-    this.getProductsList();
-    this.getUsersList(this.TenantId);
-    
+    this.gridViewData = [];
     
     this.licAsgnmt.GetTenantListByName(this.arrConfigData[0].optiProTLAURL,this.TenantId).subscribe(
       data => {
 
         if(data != null && data != undefined){
-          for(let i =0; i<this.gridViewData.length; i++){
-            for(let j =0; j<data.length; j++){
-              if(data[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && data[j].EXTNCODE > 0){
-                this.gridViewData[i].EXTNCODE = data[j].EXTNCODE;
-                this.gridViewData[i].rowcheck = true;
-                // let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
-                // checkId.checked = true;
-              }          
-            }
-            this.loading = false;
-           }
+
+          this.TenantDataArr = data;
+          this.loading = false;
+
+          this.getProductsList('Update');
+          this.getUsersList(this.TenantId);
         }
         else {
           this.loading = false;
           console.log("No tenant found!");
-        }
-
-       
+        }       
     });
   }
 
   NewRecord(){
-    
+   this.gridViewData = [];
    this.showForm = true;
    this.showsaveBtn = true;
 
-   for(var i=0; i<this.gridViewData.length; i++){
-    this.gridViewData[i].EXTNCODE = 0;
-    this.gridViewData[i].rowcheck = false;
-   }
+    this.getProductsList('New');
     this.TenantId = '';
     this.getUsersList('');
   }
 
   onLicenseCountChange(value,rowindex){
-    this.gridViewData[rowindex].EXTNCODE = value;
-    this.gridViewData[rowindex].rowcheck = true;    
+
+    if(value == '' || value == undefined || value == null){
+      this.toastrService.danger("Please enter License Count");
+      return;
+    }
+
+    if(value > this.gridViewData[rowindex].REMAINING){
+      // this.toastrService.danger("Insufficient License Count");   
+      this.showErrorMsg = true;
+      return;
+    }
+    else{
+      this.showErrorMsg = false;
+      this.gridViewData[rowindex].EXTNCODE = value;
+      this.gridViewData[rowindex].rowcheck = true; 
+    }       
   }
 
   selectProduct(checkvalue,rowdata,index){
@@ -271,6 +299,11 @@ export class DefaultComponent implements OnInit {
 
   SaveRecord(operation){
 
+    if(this.showErrorMsg){
+      this.toastrService.danger("Please enter correct License Count");
+      return;
+    }
+
     this.loading = true;
     let ProductData = [];
     let UserData = [];
@@ -280,6 +313,11 @@ export class DefaultComponent implements OnInit {
 
     for(let i=0; i< this.gridViewData.length; i++){
       if(this.gridViewData[i].rowcheck == true){
+        if(this.gridViewData[i].EXTNCODE == 0){
+          this.toastrService.danger("Please enter license count");
+          this.loading = false;
+          return;
+        }
         flagProduct = true;
         let map = {};
         map['Product'] = this.gridViewData[i].OPTM_PRODCODE;
@@ -318,25 +356,27 @@ export class DefaultComponent implements OnInit {
         if(operation == 'New'){
           if(data.length > 0){
             for(let i=0; i<data.length; i++){
-              this.toastrService.danger(data[i].Message + ' in ' + data[i].Product);
+              this.toastrService.danger(data[i].Message + ' in ' + data[i].Tenant);
               }
             }
             else{
               this.toastrService.success("Record saved succesfully");
+              this.showForm = false;
             } 
           }
         else {
           if(data.length > 0){
             for(let i=0; i<data.length; i++){
-              this.toastrService.danger(data[i].Message + ' in ' + data[i].Tenant);
+              this.toastrService.danger(data[i].Message + ' in ' + data[i].Product);
               }
             }
             else{
               this.toastrService.success("Record updated succesfully");
+              this.showForm = false;             
             } 
         } 
         
-        this.showForm = false;
+        
         this.loading = false;
         this.getTenantList();
     },
