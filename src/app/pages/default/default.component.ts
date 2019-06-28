@@ -234,12 +234,12 @@ export class DefaultComponent implements OnInit {
 
   selectProduct(checkvalue,rowdata,index){
     if(checkvalue == true){
-      this.gridViewData[index].rowcheck = true;  
+      this.gridViewData[index].rowcheck = true; 
       this.ProdCodeArr.push(rowdata.OPTM_PRODCODE);  
     }       
     else {
       this.gridViewData[index].rowcheck = false;        
-      this.gridViewData[index].EXTNCODE = 0;        
+      this.gridViewData[index].EXTNCODE = 0; 
       var index = this.ProdCodeArr.indexOf(rowdata.OPTM_PRODCODE);
       if(index > -1)
       this.ProdCodeArr.splice(index,1);     
@@ -440,6 +440,10 @@ export class DefaultComponent implements OnInit {
 
     let str = '';
     for (let i = 0; i < Products.length; i++) {
+      
+      if(Products[i] == 'SFD')
+        Products[i] = 'SFES';
+
       if (i == 0) {
        str = "'"+Products[i]+"'";
       } else {
