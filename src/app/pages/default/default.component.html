@@ -37,7 +37,7 @@
             <div class="text-center opti-logo">
                 <img src="assets/images/large-logo-alt.png" width="100%" alt="OptiPro ERP">
               <div class="text-center opti_version-info w-100">
-                Version <span></span>
+                <!-- Version <span></span> -->
                 
                 <div>Copyright 2000-2019. All rights reserved.</div>
               </div>
@@ -62,8 +62,6 @@
                   
                 </div>
               </div>
-              <!-- [rowSelected]="ProductRowSelected" (selectionChange)="gridRowSelectionChange($event)"-->
-
               
               <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
                 [selectable]="false"  [pageable]="showViewGridPage" [pageSize]="10"
@@ -74,7 +72,6 @@
                     <div class="k-form-field d-flex">
                       <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridViewData)"
                         id="FilterColumnView" [(ngModel)]="isColumnFilterView" class="k-checkbox" name="columnfilter" />
-
                       <label class="k-checkbox-label" for="FilterColumnView">Enable Filter</label>
                     </div>
                   </form>
@@ -171,11 +168,12 @@
             </div>
 
             <div class="control-bar border-top d-flex px-3 pt-2">
-              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="showsaveBtn" (click)="SaveRecord('New')"
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="IsNewRec" (click)="SaveRecord('New')"
                 [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Save</button>
-              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!showsaveBtn" (click)="SaveRecord('Update')"
+              <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!IsNewRec" (click)="SaveRecord('Update')"
                 [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Update</button>
               <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>                
+              <!-- <button nbButton size="small" class="btn-small btn btn-danger" (click)="DeleteRecord()">Delete</button> -->
             </div>
            </form>
           

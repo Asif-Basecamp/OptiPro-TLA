@@ -86,4 +86,13 @@ SaveTenant(optiProTLAURL:string,ProductArr:any[],UserArr:any[]):Observable<any>{
 return this.httpClient.post(optiProTLAURL +"LicenseAssignment/SaveTenantList",jObject,this.httpOptions);
 }
 
+GetUserbyProductList(optiProTLAURL:string,Tenant:string,Products:string):Observable<any>{
+   
+  let jObject:any={ ItemList: JSON.stringify([{ 
+    TenantKey: Tenant,
+    Products: Products
+    }]) };
+return this.httpClient.post(optiProTLAURL +"LicenseAssignment/GetUserbyProductList",jObject,this.httpOptions);
+}
+
 }
