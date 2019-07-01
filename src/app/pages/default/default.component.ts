@@ -91,7 +91,7 @@ export class DefaultComponent implements OnInit {
         obj['rowcheck'] = false;
         return obj;
       });  
-      if(this.gridViewData.length > 10)
+      if(this.gridViewData.length > 20)
         this.showViewGridPage = true;
     }
     else{
@@ -145,7 +145,7 @@ export class DefaultComponent implements OnInit {
             return obj;
           });
 
-          if(this.gridUsersData.length > 10)
+          if(this.gridUsersData.length > 20)
           this.showUserGridPage = true;
         }
         else{
@@ -437,10 +437,10 @@ export class DefaultComponent implements OnInit {
   }
 
   getUserByProductList(TenantKey,Products){
-
+    this.gridUsersData = [];
     let str = '';
     for (let i = 0; i < Products.length; i++) {
-      
+
       if(Products[i] == 'SFD')
         Products[i] = 'SFES';
 
@@ -472,7 +472,7 @@ export class DefaultComponent implements OnInit {
               }); 
            }           
 
-           if(this.gridUsersData.length > 10)
+           if(this.gridUsersData.length > 20)
             this.showUserGridPage = true;
           }
           else{
