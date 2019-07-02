@@ -41,8 +41,9 @@ export class DefaultComponent implements OnInit {
   public showViewGridPage:boolean = false;
   public showUserGridPage:boolean = false;
   public TenantDataArr: any =[];
-  public showErrorMsg: boolean = false;
   public ProdCodeArr:any = [];
+  public isColumnFilterView:boolean = false;
+  public isColumnFilterUser:boolean = false;
 
   constructor(private httpClientSer: HttpClient,private licAsgnmt: LicenseService, private toastrService: NbToastrService,private sharedService:SharedServiceService) { }
 
@@ -84,11 +85,11 @@ export class DefaultComponent implements OnInit {
   ProductListNew(){
     this.ProdCodeArr = [];
     if(this.gridViewData != null && this.gridViewData != undefined){
-      // for(var i=0; i<this.gridViewData.length; i++){
-      //   this.gridViewData[i].rowcheck = false;  
-      // } 
+      
       this.gridViewData = this.gridViewData.filter(function(obj){
         obj['rowcheck'] = false;
+        obj['showErrorMsg'] = false;
+        obj['extnValue'] = obj.EXTNCODE;
         return obj;
       });  
       if(this.gridViewData.length > 20)
@@ -107,6 +108,8 @@ export class DefaultComponent implements OnInit {
         if(this.TenantDataArr[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && this.TenantDataArr[j].EXTNCODE > 0){
             this.gridViewData[i].EXTNCODE = this.TenantDataArr[j].EXTNCODE;
             this.gridViewData[i].rowcheck = true;
+            this.gridViewData[i].showErrorMsg = false;
+            this.gridViewData[i].extnValue = this.TenantDataArr[j].EXTNCODE;
             this.ProdCodeArr.push(this.gridViewData[i].OPTM_PRODCODE);
         }
       }     
@@ -137,9 +140,6 @@ export class DefaultComponent implements OnInit {
         this.gridUsersData = data;
         
         if(this.gridUsersData != null && this.gridUsersData != undefined){
-          // for(var i=0; i<this.gridUsersData.length; i++){
-          //   this.gridUsersData[i].rowcheck = false;
-          // }
           this.gridUsersData = this.gridUsersData.filter(function(obj){
             obj['rowcheck'] = false;
             return obj;
@@ -179,9 +179,11 @@ export class DefaultComponent implements OnInit {
     if(tenantName == undefined || tenantName == null || tenantName == ''){
       return false;
     }
-
+    this.isColumnFilterView = false;
+    this.isColumnFilterUser = false;
+    this.clearFilter(this.gridViewData);
+    this.clearFilter(this.gridUsersData);
     this.loading = true;
-
     this.showForm = true;
     this.IsNewRec = false;
     this.TenantId = tenantName;
@@ -208,10 +210,13 @@ export class DefaultComponent implements OnInit {
    this.gridViewData = [];
    this.showForm = true;
    this.IsNewRec = true;
-
-    this.getProductsList('New');
-    this.TenantId = '';
-    this.getUsersList('');
+   this.isColumnFilterView = false;
+   this.isColumnFilterUser = false;
+   this.clearFilter(this.gridViewData);
+   this.clearFilter(this.gridUsersData);
+   this.getProductsList('New');
+   this.TenantId = '';
+   this.getUsersList('');
   }
 
   onLicenseCountChange(value,rowindex){
@@ -221,12 +226,14 @@ export class DefaultComponent implements OnInit {
       return;
     }
 
-    if(value > this.gridViewData[rowindex].REMAINING){
-      this.showErrorMsg = true;
+    let diff = value - this.gridViewData[rowindex].extnValue;
+   
+    if(diff > this.gridViewData[rowindex].REMAINING){
+      this.gridViewData[rowindex].showErrorMsg = true;
       return;
     }
     else{
-      this.showErrorMsg = false;
+      this.gridViewData[rowindex].showErrorMsg = false;
       this.gridViewData[rowindex].EXTNCODE = value;
       this.gridViewData[rowindex].rowcheck = true; 
     }       
@@ -299,11 +306,6 @@ export class DefaultComponent implements OnInit {
 
   SaveRecord(operation){
 
-    if(this.showErrorMsg){
-      this.toastrService.danger("Please enter correct License Count");
-      return;
-    }
-
     this.loading = true;
     let ProductData = [];
     let UserData = [];
@@ -315,6 +317,11 @@ export class DefaultComponent implements OnInit {
       if(this.gridViewData[i].rowcheck == true){
         if(this.gridViewData[i].EXTNCODE == 0){
           this.toastrService.danger("Please enter license count");
+          this.loading = false;
+          return;
+        }
+        else if(this.gridViewData[i].showErrorMsg == true){
+          this.toastrService.danger("Please enter correct License Count");
           this.loading = false;
           return;
         }
@@ -417,7 +424,8 @@ export class DefaultComponent implements OnInit {
       filters: []
     }
   };
-  public clearFilters() {
+  
+  clearFilters() {
     this.state.filter = {
       logic: 'and',
       filters: []

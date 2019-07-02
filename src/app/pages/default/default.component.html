@@ -64,7 +64,7 @@
               </div>
               
               <kendo-grid [kendoGridBinding]="gridViewData" [filterable]=isColumnFilterView [groupable]=isColumnGroup
-                [selectable]="false"  [pageable]="showViewGridPage" [pageSize]="10"
+                [selectable]="false"  [pageable]="showViewGridPage" [pageSize]="10"  [filter]="state.filter"
                 [resizable]="true" [ngStyle]="{'max-height': '300px'}">
 
                 <ng-template kendoGridToolbarTemplate>
@@ -116,7 +116,7 @@
                       value={{dataItem.EXTNCODE}} #licenseCount title="License Count" />
                      <div id="extcode{{idx}}">
                       <small id="errorcode{{idx}}" class="form-text text-muted float-right opti_error-msg" 
-                         *ngIf="licenseCount.value > dataItem.REMAINING">
+                         *ngIf="dataItem.showErrorMsg">
                         Insufficient License Count 
                       </small>
                      </div>
@@ -129,7 +129,7 @@
               </kendo-grid>
 
               <kendo-grid class="mt-4" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
-                [selectable]="false"  [pageable]="showUserGridPage" [pageSize]="10" [resizable]="true" [ngStyle]="{'max-height': '300px'}">
+                [selectable]="false"  [pageable]="showUserGridPage" [pageSize]="10" [filter]="state.filter" [resizable]="true" [ngStyle]="{'max-height': '300px'}">
 
                 <ng-template kendoGridToolbarTemplate>
                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
