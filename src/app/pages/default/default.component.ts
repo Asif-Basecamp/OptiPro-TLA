@@ -85,13 +85,6 @@ export class DefaultComponent implements OnInit {
   ProductListNew(){
     this.ProdCodeArr = [];
     if(this.gridViewData != null && this.gridViewData != undefined){
-      
-      this.gridViewData = this.gridViewData.filter(function(obj){
-        obj['rowcheck'] = false;
-        obj['showErrorMsg'] = false;
-        obj['extnValue'] = obj.EXTNCODE;
-        return obj;
-      });  
       if(this.gridViewData.length > 20)
         this.showViewGridPage = true;
     }
@@ -108,8 +101,7 @@ export class DefaultComponent implements OnInit {
         if(this.TenantDataArr[j].PRODUCTKEY == this.gridViewData[i].OPTM_PRODCODE && this.TenantDataArr[j].EXTNCODE > 0){
             this.gridViewData[i].EXTNCODE = this.TenantDataArr[j].EXTNCODE;
             this.gridViewData[i].rowcheck = true;
-            this.gridViewData[i].showErrorMsg = false;
-            this.gridViewData[i].extnValue = this.TenantDataArr[j].EXTNCODE;
+            this.gridViewData[i].extnValue= this.TenantDataArr[j].EXTNCODE;
             this.ProdCodeArr.push(this.gridViewData[i].OPTM_PRODCODE);
         }
       }     
@@ -123,6 +115,13 @@ export class DefaultComponent implements OnInit {
     this.licAsgnmt.GetProductsList(this.arrConfigData[0].optiProTLAURL).subscribe(
       data => {
         this.gridViewData = data;
+
+        this.gridViewData = this.gridViewData.filter(function(obj){
+          obj['rowcheck'] = false;
+          obj['showErrorMsg'] = false;
+          obj['extnValue'] = obj.EXTNCODE;
+          return obj;
+        }); 
 
         if(action == 'New')
         this.ProductListNew();
