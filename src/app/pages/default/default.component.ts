@@ -19,8 +19,6 @@ export class DefaultComponent implements OnInit {
   private commonData = new CommonData();
   public fileURL = this.commonData.get_current_url();
   public TenantId:any = '';
-  public selectedValue: any = [];
-  public listItems: any = [];
   public gridViewData: any = [];
   public gridUsersData: any = [];
   public TenantList: any = [];
@@ -33,9 +31,7 @@ export class DefaultComponent implements OnInit {
   public selectallprod: boolean = false;
   public ProductArr: any = [];
   public UserArr: any = [];
-  public ProductRowSelected: any;
   loading = false;
-  public showNewBtn:boolean = false;
   public showForm: boolean = false;
   public IsNewRec: boolean = false;
   public showViewGridPage:boolean = false;
@@ -70,22 +66,10 @@ export class DefaultComponent implements OnInit {
     );
   }
 
-  // setUncheckCheckbox(){
-  //   for(let i=0; i<this.gridViewData.length;i++){
-  //     let checkId = document.getElementsByClassName('checkboxFN')[i] as HTMLInputElement;
-  //     checkId.checked = false;
-  //   }
-
-  //   for(let i=0; i<this.gridUsersData.length;i++){
-  //     let checkId = document.getElementsByClassName('checkboxUN')[i] as HTMLInputElement;
-  //     checkId.checked = false;
-  //   }
-  // }
-
   ProductListNew(){
     this.ProdCodeArr = [];
     if(this.gridViewData != null && this.gridViewData != undefined){
-      if(this.gridViewData.length > 20)
+      if(this.gridViewData.length > 10)
         this.showViewGridPage = true;
     }
     else{
@@ -127,8 +111,7 @@ export class DefaultComponent implements OnInit {
         this.ProductListNew();
         else
         this.ProductListUpdate();
-        this.loading = false;
-        
+        this.loading = false;        
       });
   }
 
@@ -144,7 +127,7 @@ export class DefaultComponent implements OnInit {
             return obj;
           });
 
-          if(this.gridUsersData.length > 20)
+          if(this.gridUsersData.length > 10)
           this.showUserGridPage = true;
         }
         else{
@@ -239,17 +222,22 @@ export class DefaultComponent implements OnInit {
   }
 
   selectProduct(checkvalue,rowdata,index){
-    if(checkvalue == true){
-      this.gridViewData[index].rowcheck = true; 
-      this.ProdCodeArr.push(rowdata.OPTM_PRODCODE);  
-    }       
-    else {
-      this.gridViewData[index].rowcheck = false;        
-      this.gridViewData[index].EXTNCODE = 0; 
-      var index = this.ProdCodeArr.indexOf(rowdata.OPTM_PRODCODE);
-      if(index > -1)
-      this.ProdCodeArr.splice(index,1);     
-    } 
+
+    for(let i=0; i < this.gridViewData.length; i++){
+      if(this.gridViewData[i].OPTM_PRODCODE == rowdata.OPTM_PRODCODE){
+        if(checkvalue == true){
+          this.gridViewData[i].rowcheck = true; 
+          this.ProdCodeArr.push(rowdata.OPTM_PRODCODE);  
+        }       
+        else {
+          this.gridViewData[i].rowcheck = false;        
+          this.gridViewData[i].EXTNCODE = 0; 
+          var idx = this.ProdCodeArr.indexOf(rowdata.OPTM_PRODCODE);
+          if(idx > -1)
+          this.ProdCodeArr.splice(idx,1);     
+        } 
+      }
+    }   
 
     if(this.IsNewRec)
     this.getUserByProductList('',this.ProdCodeArr);
@@ -257,11 +245,18 @@ export class DefaultComponent implements OnInit {
     this.getUserByProductList(this.TenantId,this.ProdCodeArr);
   }
 
-  selectUser(checkvalue,rowdata,index){   
-    if(checkvalue == true)
-      this.gridUsersData[index].rowcheck = true;        
-    else
-      this.gridUsersData[index].rowcheck = false;     
+  selectUser(checkvalue,rowdata,index){  
+
+    let userList = this.gridUsersData;
+     userList.filter(function(value,key){
+      if(value.OPTM_USERCODE == rowdata.OPTM_USERCODE){
+       if(checkvalue == true)
+        userList[key].rowcheck = true;        
+       else
+        userList[key].rowcheck = false; 
+      }
+    })     
+    this.gridUsersData = userList;        
   }
 
   on_Selectall_checkbox_checked(checkall){
@@ -295,12 +290,7 @@ export class DefaultComponent implements OnInit {
   }
 
   gridRowSelectionChange(evt){
-    //let code = evt.selectedRows[0].dataItem.OPTM_PRODCODE;
-    // this.licAsgnmt.GetUserList(this.arrConfigData[0].optiProTLAURL,this.selectedValue.dbName).subscribe(
-    //   data => {
-    //     this.gridUsersData = data;
-    // });
-
+    
   }
 
   SaveRecord(operation){
@@ -479,7 +469,7 @@ export class DefaultComponent implements OnInit {
               }); 
            }           
 
-           if(this.gridUsersData.length > 20)
+           if(this.gridUsersData.length > 10)
             this.showUserGridPage = true;
           }
           else{

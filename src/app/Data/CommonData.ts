@@ -22,8 +22,6 @@ export interface ColumnSetting {
 
 export class CommonData {
     public href: any = window.location.href;
-    public adminDBName: string = "OPTIPROADMIN";
-    public productCode: string = "DSB";
 
     //This will get the path of app
     public get_current_url() {

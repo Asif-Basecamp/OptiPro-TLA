@@ -1,12 +1,7 @@
-<!-- <nb-card>
-  <nb-menu class="cursor-pointer" (click)="OnclickMenu($event)" [items]="TenantItems">
-  </nb-menu>
-</nb-card> -->
 <style>
   .opti_error-msg {
       color: red !important;
-      font-size: 12px;
-      
+      font-size: 12px;      
   }
 </style>
 
@@ -70,8 +65,8 @@
                 <ng-template kendoGridToolbarTemplate>
                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
                     <div class="k-form-field d-flex">
-                      <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridViewData)"
-                        id="FilterColumnView" [(ngModel)]="isColumnFilterView" class="k-checkbox" name="columnfilter" />
+                      <input #chkFilterView type="checkbox" (change)="onFilterChange(chkFilterView,gridViewData)"
+                        id="FilterColumnView" [(ngModel)]="isColumnFilterView" class="k-checkbox" name="FilterColumnView" />
                       <label class="k-checkbox-label" for="FilterColumnView">Enable Filter</label>
                     </div>
                   </form>
@@ -106,10 +101,10 @@
                 <kendo-grid-column field="OPTM_PRODDESC" title="Product Description">
                 </kendo-grid-column> 
 
-                <kendo-grid-column field="TOTALASSIGNEDLIC" title="Total License Assigned" class="text-right">
+                <kendo-grid-column field="TOTALASSIGNEDLIC" title="Total License Assigned" headerClass="text-right" class="text-right">
                 </kendo-grid-column> 
 
-                <kendo-grid-column field="EXTNCODE" title="Tenant License Count">
+                <kendo-grid-column field="EXTNCODE" title="Tenant License Count" headerClass="text-right">
                   <ng-template kendoGridCellTemplate let-dataItem let-idx='rowIndex'>
                     <input type="text" nbInput fieldSize="small" name="dataItem.EXTNCODE" class="form-control text-right" id="licenseCount" [disabled]="TenantId == ''" 
                       (keypress)="numberOnly($event)" (change)="onLicenseCountChange(licenseCount.value,idx)"
@@ -123,19 +118,19 @@
                   </ng-template>
                 </kendo-grid-column> 
                 
-                <kendo-grid-column field="REMAINING" title="Remaining" class="text-right">
+                <kendo-grid-column field="REMAINING" title="Remaining" headerClass="text-right" class="text-right">
                 </kendo-grid-column> 
 
               </kendo-grid>
 
               <kendo-grid class="mt-4" [kendoGridBinding]="gridUsersData" [filterable]=isColumnFilterUser [groupable]=isColumnGroup
-                [selectable]="false"  [pageable]="showUserGridPage" [pageSize]="10" [filter]="state.filter" [resizable]="true" [ngStyle]="{'max-height': '300px'}">
+                [selectable]="false" [pageable]="showUserGridPage" [pageSize]="10" [filter]="state.filter" [resizable]="true" [ngStyle]="{'max-height': '300px'}">
 
                 <ng-template kendoGridToolbarTemplate>
                   <form class="k-form opti_show-hide-grid-column-filter float-left opti_hide-in-mobile pl-0 pt-0">
                     <div class="k-form-field d-flex">
-                      <input #chkFilter type="checkbox" (change)="onFilterChange(chkFilter,gridUsersData)"
-                        id="FilterColumnUser" [(ngModel)]="isColumnFilterUser" class="k-checkbox" name="columnfilter" />
+                      <input #chkFilterUser type="checkbox" (change)="onFilterChange(chkFilterUser,gridUsersData)"
+                        id="FilterColumnUser" [(ngModel)]="isColumnFilterUser" class="k-checkbox" name="FilterColumnUser" />
                       <label class="k-checkbox-label" for="FilterColumnUser">Enable Filter</label>
                     </div>
                   </form>
@@ -173,7 +168,6 @@
               <button nbButton status="success" size="small" class="btn-small btn btn-success mr-2" *ngIf="!IsNewRec" (click)="SaveRecord('Update')"
                 [ngClass]="{'btn-small btn btn-success mr-2':true}" [disabled]="!TenantForm.form.valid">Update</button>
               <button nbButton size="small" class="btn-small btn btn-default mr-2" (click)="CancelRecord()">Cancel</button>                
-              <!-- <button nbButton size="small" class="btn-small btn btn-danger" (click)="DeleteRecord()">Delete</button> -->
             </div>
            </form>
           
