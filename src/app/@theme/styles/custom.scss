@@ -3067,6 +3067,11 @@ body .ui-treetable.ui-treetable-hoverable-rows .ui-treetable-tbody > tr:not(.ui-
 body .ui-treetable .ui-column-resizer-helper {
   background-color: nb-theme(color-primary);
 }
+.k-grid th, .k-grid tr:not(.k-grid-norecords):hover{
+  & .k-checkbox-label::before{
+    color: lighten( nb-theme(color-primary), 60% ) !important;
+  }
+}
 .pi-chevron-right, .pi-chevron-down{
   font-family: nebular;
     speak: none;
