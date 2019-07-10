@@ -3,7 +3,6 @@ import { NbSidebarService } from '@nebular/theme';
 import { UserData } from '../../../@core/data/users';
 // import { AnalyticsService } from '../../../@core/utils';
 import { Router } from '@angular/router';
-import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'opti-header',
@@ -17,12 +16,9 @@ export class HeaderComponent implements OnInit {
 
 
   user: any;
-  userMenu = [{ title: 'Log out' }];
 
-  constructor(private sidebarService: NbSidebarService,private userService: UserData,private router: Router,private toastrService: NbToastrService) {
-    if(window.localStorage.getItem('Username') == null || window.localStorage.getItem('Username') == undefined) {
-         this.router.navigateByUrl('/auth/signin');
-    }
+  constructor(private sidebarService: NbSidebarService,private userService: UserData,private router: Router) {
+   
   }
 
   ngOnInit() {
@@ -42,13 +38,4 @@ export class HeaderComponent implements OnInit {
       document.querySelector(".menu-item > a.active").classList.remove('active');
     }
   }
-
-  LogOut(position){
-     if(window.localStorage.getItem('Username') != null || window.localStorage.getItem('Username') != undefined) {
-        window.localStorage.clear();
-        this.toastrService.success('You have been logged out',  ``, { position });
-        this.router.navigateByUrl('/Login');
-      }
-  }
-
 }
